@@ -1,8 +1,7 @@
 package handler
 
 import (
-	"net/http"
-
+	"github.com/andruwizz/gin-collective-library-backend/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,5 +12,5 @@ func NewBookHandler() *BookHandler {
 }
 
 func (b *BookHandler) List(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{"path": "Book"})
+	helper.OK(ctx, gin.H{"path": "Book"})
 }
