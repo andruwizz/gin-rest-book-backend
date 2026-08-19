@@ -6,10 +6,11 @@ import (
 )
 
 func main() {
-	app := gin.Default()
+	router := gin.Default()
 
 	// Init Route Config
-	routes.Setup(app)
+	api := router.Group("/api/v1")
+	routes.Setup(api)
 
-	app.Run(":3000")
+	router.Run(":3000")
 }

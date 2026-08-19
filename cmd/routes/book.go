@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func BookRouter(app *gin.Engine, h *handler.BookHandler) {
-	app.GET("/books", h.List)
+func BookRouter(r *gin.RouterGroup, h *handler.BookHandler) {
+	books := r.Group("/books")
+	books.GET("/", h.List)
 }

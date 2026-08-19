@@ -5,12 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(app *gin.Engine) {
+func Setup(rg *gin.RouterGroup) {
 	// Setup Handler
 	bookHandler := handler.NewBookHandler()
 	userHandler := handler.NewUserHandler()
 
 	// Setup Router
-	BookRouter(app, bookHandler)
-	UserRouter(app, userHandler)
+	BookRouter(rg, bookHandler)
+	UserRouter(rg, userHandler)
 }
