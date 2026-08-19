@@ -11,6 +11,9 @@ func NewBookHandler() *BookHandler {
 	return &BookHandler{}
 }
 
+func (b *BookHandler) Create(ctx *gin.Context) {
+}
+
 func (b *BookHandler) List(ctx *gin.Context) {
 	helper.OK(ctx, gin.H{"path": "Book"})
 }
