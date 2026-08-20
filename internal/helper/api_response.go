@@ -34,6 +34,19 @@ func OK(ctx *gin.Context, data any) {
 	})
 }
 
+func OkWithMeta(ctx *gin.Context, data any, meta Meta) {
+	ctx.JSON(http.StatusOK, Response{
+		Success: true,
+		Data:    data,
+		Meta: &Meta{
+			Page:       meta.Page,
+			PerPage:    meta.PerPage,
+			Total:      meta.Total,
+			TotalPages: meta.TotalPages,
+		},
+	})
+}
+
 // Fail Error response
 func Fail(ctx *gin.Context, status int, code, message string) {
 	ctx.JSON(status, Response{
