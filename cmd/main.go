@@ -11,11 +11,10 @@ func main() {
 	// Init App
 	app := config.NewGin()
 
-	bootstrap := config.BootstrapConfig{
+	config.Bootstrap(&config.BootstrapConfig{
 		DB:         db,
 		RouteGroup: app.Group("/api/v1"),
-	}
-	config.Bootstrap(&bootstrap)
+	})
 
 	app.Run(":3000")
 }
