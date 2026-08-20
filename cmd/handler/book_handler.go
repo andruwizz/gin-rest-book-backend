@@ -27,12 +27,9 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 	}
 
 	var response = model.BookResponse{
-		Id:    "BOOK01212421",
-		Title: book.Title,
-		Author: model.AuthorProfile{
-			Id:   book.AuthorId,
-			Name: "Andrea Hirata",
-		},
+		Id:        "BOOK01212421",
+		Title:     book.Title,
+		Author:    "Andrea Hirata",
 		CreatedAt: time.RFC3339,
 		UpdatedAt: time.RFC3339,
 	}
@@ -45,22 +42,16 @@ func (b *BookHandler) List(ctx *gin.Context) {
 
 	var response = []model.BookResponse{
 		{
-			Id:    "BOOK01212421",
-			Title: "Book One",
-			Author: model.AuthorProfile{
-				Id:   "AU03232452",
-				Name: "Andrea Hirata",
-			},
+			Id:        "BOOK01212421",
+			Title:     "Book One",
+			Author:    "Andrea Hirata",
 			CreatedAt: time.RFC3339,
 			UpdatedAt: time.RFC3339,
 		},
 		{
-			Id:    "BOOK01212422",
-			Title: "Book Two",
-			Author: model.AuthorProfile{
-				Id:   "AU03232452",
-				Name: "Andrea Hirata",
-			},
+			Id:        "BOOK01212422",
+			Title:     "Book Two",
+			Author:    "Andrea Hirata",
 			CreatedAt: time.RFC3339,
 			UpdatedAt: time.RFC3339,
 		},
@@ -80,12 +71,9 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	var response = model.BookResponse{
-		Id:    id,
-		Title: "Book One",
-		Author: model.AuthorProfile{
-			Id:   "AU03232452",
-			Name: "Andrea Hirata",
-		},
+		Id:        id,
+		Title:     "Book One",
+		Author:    "Andrea Hirata",
 		CreatedAt: time.RFC3339,
 		UpdatedAt: time.RFC3339,
 	}
@@ -103,12 +91,9 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 	}
 
 	var response = model.BookResponse{
-		Id:    id,
-		Title: book.Title,
-		Author: model.AuthorProfile{
-			Id:   book.AuthorId,
-			Name: "Andrea Hirata",
-		},
+		Id:        id,
+		Title:     book.Title,
+		Author:    "Andrea Hirata",
 		CreatedAt: time.RFC3339,
 		UpdatedAt: time.RFC3339,
 	}
