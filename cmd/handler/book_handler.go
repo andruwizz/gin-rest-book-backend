@@ -7,13 +7,16 @@ import (
 
 	"github.com/andruwizz/gin-collective-library-backend/internal/helper"
 	"github.com/andruwizz/gin-collective-library-backend/internal/model"
+	"github.com/andruwizz/gin-collective-library-backend/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
-type BookHandler struct{}
+type BookHandler struct {
+	service *service.BookService
+}
 
-func NewBookHandler() *BookHandler {
-	return &BookHandler{}
+func NewBookHandler(bs *service.BookService) *BookHandler {
+	return &BookHandler{service: bs}
 }
 
 func (b *BookHandler) Create(ctx *gin.Context) {

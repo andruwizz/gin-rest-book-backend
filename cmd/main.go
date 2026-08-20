@@ -1,16 +1,21 @@
 package main
 
 import (
-	"github.com/andruwizz/gin-collective-library-backend/cmd/routes"
-	"github.com/gin-gonic/gin"
+	"github.com/andruwizz/gin-collective-library-backend/internal/config"
 )
 
 func main() {
-	router := gin.Default()
+	// Init Database
+	db := config.NewDatabase()
 
-	// Init Route Config
-	api := router.Group("/api/v1")
-	routes.Setup(api)
+	// Init App
+	app := config.NewGin()
 
-	router.Run(":3000")
+	bootstrap := config.BootstrapConfig{
+		DB:         db,
+		RouteGroup: app.Group("/api/v1"),
+	}
+	config.Bootstrap(&bootstrap)
+
+	app.Run(":3000")
 }
