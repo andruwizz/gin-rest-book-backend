@@ -4,17 +4,11 @@ services:
     ports:
       - '${DATABASE_PORT:-3306}:3306'
     environment:
-      MYSQL_DATABASE: '${DATABASE_NAME}'
       MYSQL_USER: '${DATABASE_USER}'
-      MYSQL_ROOT_PASSWORD: '${DATABASE_ROOT_PASSWORD}'
       MYSQL_PASSWORD: '${DATABASE_PASSWORD}'
-    volumes:
-      - 'data-mysql:/var/lib/mysql'
+      MYSQL_ROOT_PASSWORD: '${DATABASE_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${DATABASE_NAME}'
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-p${DATABASE_PASSWORD}"]
       retries: 3
       timeout: 5s
-
-volumes:
-  data-mysql:
-    driver: local
