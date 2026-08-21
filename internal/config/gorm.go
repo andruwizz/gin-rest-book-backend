@@ -9,7 +9,7 @@ import (
 )
 
 func NewDatabase() *gorm.DB {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", "user", "password", "127.0.0.1", 3306, "app")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", "user", "password", "127.0.0.1", 3306, "app")
 
 	db, err := gorm.Open(mysql.Open(dsn))
 	if err != nil {

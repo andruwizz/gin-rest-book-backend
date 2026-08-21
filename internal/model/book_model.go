@@ -1,15 +1,14 @@
 package model
 
 import (
-	"math/rand"
 	"time"
 
-	"github.com/oklog/ulid"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type Book struct {
-	Id        string `gorm:"type:varchar;primaryKey" json:"id"`
+	Id        string `gorm:"type:uuid;primaryKey" json:"id"`
 	Title     string `gorm:"type:varchar" json:"title"`
 	Author    string `gorm:"type:varchar" json:"author"`
 	CreatedAt string `gorm:"type:bigint" json:"created_at"`
@@ -17,11 +16,11 @@ type Book struct {
 }
 
 func (b *Book) BeforeCreate(tx *gorm.DB) error {
-	t := time.Unix(1000000, 0)
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-	tx.Statement.SetColumn("id", ulid.MustNew(ulid.Timestamp(t), entropy))
-	tx.Statement.SetColumn("CreatedAt", time.Now().Unix())
-	tx.Statement.SetColumn("UpdatedAt", time.Now().Unix())
+	uuid := uuid.New()
+	time := time.Now().UnixMilli()
+	tx.Statement.SetColumn("id", uuid)
+	tx.Statement.SetColumn("CreatedAt", time)
+	tx.Statement.SetColumn("UpdatedAt", time)
 
 	return nil
 }

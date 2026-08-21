@@ -10,7 +10,7 @@ import (
 )
 
 type BookRepository interface {
-	Create(data model.Book) (*model.Book, error)
+	Create(data *model.Book) (*model.Book, error)
 	Find(id string) (*model.Book, error)
 	List(limit int, page int) (*[]model.Book, error)
 	Update(id string, data model.Book) (*model.Book, error)
@@ -25,13 +25,13 @@ func NewBookRepository(db *gorm.DB) BookRepository {
 	return &bookRepository{db}
 }
 
-func (b *bookRepository) Create(data model.Book) (*model.Book, error) {
+func (b *bookRepository) Create(data *model.Book) (*model.Book, error) {
 	err := b.db.Create(&data).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return &data, nil
+	return data, nil
 }
 
 func (b *bookRepository) Find(id string) (*model.Book, error) {
