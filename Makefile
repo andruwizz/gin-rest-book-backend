@@ -6,7 +6,7 @@ else
 	PACKAGE = $(shell head -1 go.mod | awk '{print $$2}')
 endif
 
-run-backend:
+run:
 	go run cmd/main.go
 
 migration $$(enter):
