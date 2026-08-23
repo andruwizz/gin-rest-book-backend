@@ -4,16 +4,17 @@ import (
 	"errors"
 	"math"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
 type BookRepository interface {
-	Create(data *model.Book) (*model.Book, error)
-	Find(id string) (*model.Book, error)
-	List(limit int, page int) (*[]model.Book, *model.Pagination, error)
-	Update(id string, data model.Book) (*model.Book, error)
+	Create(data *entity.Book) (*entity.Book, error)
+	Find(id string) (*entity.Book, error)
+	List(limit int, page int) (*[]entity.Book, *dto.Pagination, error)
+	Update(id string, data entity.Book) (*entity.Book, error)
 	Delete(id string) error
 }
 
@@ -25,7 +26,7 @@ func NewBookRepository(db *gorm.DB) BookRepository {
 	return &bookRepository{db}
 }
 
-func (b *bookRepository) Create(data *model.Book) (*model.Book, error) {
+func (b *bookRepository) Create(data *entity.Book) (*entity.Book, error) {
 	err := b.db.Create(&data).Error
 	if err != nil {
 		return nil, err
@@ -34,11 +35,11 @@ func (b *bookRepository) Create(data *model.Book) (*model.Book, error) {
 	return data, nil
 }
 
-func (b *bookRepository) Find(id string) (*model.Book, error) {
-	var book model.Book
+func (b *bookRepository) Find(id string) (*entity.Book, error) {
+	var book entity.Book
 
 	err := b.db.
-		Model(&model.Book{}).
+		Model(&entity.Book{}).
 		Where("id = ?", id).
 		First(&book).
 		Error
@@ -50,9 +51,9 @@ func (b *bookRepository) Find(id string) (*model.Book, error) {
 	return &book, nil
 }
 
-func (b *bookRepository) List(limit int, page int) (*[]model.Book, *model.Pagination, error) {
-	var books []model.Book
-	var pagination model.Pagination
+func (b *bookRepository) List(limit int, page int) (*[]entity.Book, *dto.Pagination, error) {
+	var books []entity.Book
+	var pagination dto.Pagination
 
 	query := b.db
 
@@ -73,8 +74,8 @@ func (b *bookRepository) List(limit int, page int) (*[]model.Book, *model.Pagina
 	return &books, &pagination, nil
 }
 
-func (b *bookRepository) Update(id string, data model.Book) (*model.Book, error) {
-	var book model.Book
+func (b *bookRepository) Update(id string, data entity.Book) (*entity.Book, error) {
+	var book entity.Book
 
 	curr, err := b.Find(id)
 	if err != nil {
@@ -105,7 +106,7 @@ func (b *bookRepository) Delete(id string) error {
 
 	err = b.db.
 		Where("id = ?", id).
-		Delete(&model.Book{}).
+		Delete(&entity.Book{}).
 		Error
 
 	if err != nil {
@@ -115,7 +116,7 @@ func (b *bookRepository) Delete(id string) error {
 	return nil
 }
 
-func (b *bookRepository) Paginate(value []model.Book, pagination *model.Pagination, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
+func (b *bookRepository) Paginate(value []entity.Book, pagination *dto.Pagination, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
 	var totalRecords int64
 	var currRecord int64
 

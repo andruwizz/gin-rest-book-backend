@@ -1,15 +1,16 @@
 package usecase
 
 import (
-	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
 )
 
 type BookUsecase interface {
-	Create(payload *model.BookRequest) (*model.BookResponse, error)
-	Get(id string) (*model.BookResponse, error)
-	List(limit int, page int) ([]*model.BookResponse, *model.Pagination, error)
-	Update(id string, payload *model.BookRequest) (*model.BookResponse, error)
+	Create(payload *dto.BookRequest) (*dto.BookResponse, error)
+	Get(id string) (*dto.BookResponse, error)
+	List(limit int, page int) ([]*dto.BookResponse, *dto.Pagination, error)
+	Update(id string, payload *dto.BookRequest) (*dto.BookResponse, error)
 	Delete(id string) error
 }
 
@@ -21,8 +22,8 @@ func NewBookUsecase(repository repository.BookRepository) BookUsecase {
 	return &bookUsecase{repository}
 }
 
-func (c *bookUsecase) Create(payload *model.BookRequest) (*model.BookResponse, error) {
-	data := model.Book{
+func (c *bookUsecase) Create(payload *dto.BookRequest) (*dto.BookResponse, error) {
+	data := entity.Book{
 		Title:  payload.Title,
 		Author: payload.Author,
 	}
@@ -32,7 +33,7 @@ func (c *bookUsecase) Create(payload *model.BookRequest) (*model.BookResponse, e
 		return nil, err
 	}
 
-	result := &model.BookResponse{
+	result := &dto.BookResponse{
 		Id:        book.Id,
 		Title:     book.Title,
 		Author:    book.Author,
@@ -43,13 +44,13 @@ func (c *bookUsecase) Create(payload *model.BookRequest) (*model.BookResponse, e
 	return result, nil
 }
 
-func (c *bookUsecase) Get(id string) (*model.BookResponse, error) {
+func (c *bookUsecase) Get(id string) (*dto.BookResponse, error) {
 	book, err := c.repository.Find(id)
 	if err != nil {
 		return nil, err
 	}
 
-	result := &model.BookResponse{
+	result := &dto.BookResponse{
 		Id:        book.Id,
 		Title:     book.Title,
 		Author:    book.Author,
@@ -60,15 +61,15 @@ func (c *bookUsecase) Get(id string) (*model.BookResponse, error) {
 	return result, nil
 }
 
-func (c *bookUsecase) List(limit int, page int) ([]*model.BookResponse, *model.Pagination, error) {
+func (c *bookUsecase) List(limit int, page int) ([]*dto.BookResponse, *dto.Pagination, error) {
 	books, pagination, err := c.repository.List(limit, page)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	result := []*model.BookResponse{}
+	result := []*dto.BookResponse{}
 	for _, value := range *books {
-		book := model.BookResponse{
+		book := dto.BookResponse{
 			Id:        value.Id,
 			Title:     value.Title,
 			Author:    value.Author,
@@ -82,8 +83,8 @@ func (c *bookUsecase) List(limit int, page int) ([]*model.BookResponse, *model.P
 	return result, pagination, nil
 }
 
-func (c *bookUsecase) Update(id string, payload *model.BookRequest) (*model.BookResponse, error) {
-	data := model.Book{
+func (c *bookUsecase) Update(id string, payload *dto.BookRequest) (*dto.BookResponse, error) {
+	data := entity.Book{
 		Title:  payload.Title,
 		Author: payload.Author,
 	}
@@ -93,7 +94,7 @@ func (c *bookUsecase) Update(id string, payload *model.BookRequest) (*model.Book
 		return nil, err
 	}
 
-	result := &model.BookResponse{
+	result := &dto.BookResponse{
 		Id:        book.Id,
 		Title:     book.Title,
 		Author:    book.Author,

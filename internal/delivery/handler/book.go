@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +19,7 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 }
 
 func (b *BookHandler) Create(ctx *gin.Context) {
-	var book model.BookRequest
+	var book dto.BookRequest
 	if err := ctx.ShouldBind(&book); err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
@@ -69,7 +69,7 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 func (b *BookHandler) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var book model.BookRequest
+	var book dto.BookRequest
 	if err := ctx.ShouldBind(&book); err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return

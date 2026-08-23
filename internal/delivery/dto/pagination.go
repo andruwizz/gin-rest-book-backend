@@ -1,4 +1,4 @@
-package model
+package dto
 
 type Pagination struct {
 	Records      int64 `json:"records"`
