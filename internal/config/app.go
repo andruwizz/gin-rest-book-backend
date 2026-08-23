@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/andruwizz/gin-collective-library-backend/cmd/handler"
-	"github.com/andruwizz/gin-collective-library-backend/cmd/routes"
-	"github.com/andruwizz/gin-collective-library-backend/internal/repository"
-	"github.com/andruwizz/gin-collective-library-backend/internal/service"
+	"github.com/andruwizz/gin-book-sharing-backend/cmd/handler"
+	"github.com/andruwizz/gin-book-sharing-backend/cmd/routes"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

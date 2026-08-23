@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/andruwizz/gin-collective-library-backend/internal/model"
-	"github.com/andruwizz/gin-collective-library-backend/internal/repository"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
 )
 
 type BookService interface {

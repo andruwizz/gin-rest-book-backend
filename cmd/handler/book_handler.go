@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/andruwizz/gin-collective-library-backend/internal/helper"
-	"github.com/andruwizz/gin-collective-library-backend/internal/model"
-	"github.com/andruwizz/gin-collective-library-backend/internal/service"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/service"
 	"github.com/gin-gonic/gin"
 )
 

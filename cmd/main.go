@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/andruwizz/gin-collective-library-backend/internal/config"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/config"
 )
 
 func main() {

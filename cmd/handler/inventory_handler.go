@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/andruwizz/gin-collective-library-backend/internal/helper"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 

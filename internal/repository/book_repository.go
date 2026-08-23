@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math"
 
-	"github.com/andruwizz/gin-collective-library-backend/internal/model"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
