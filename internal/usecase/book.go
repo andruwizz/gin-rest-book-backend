@@ -1,33 +1,33 @@
-package service
+package usecase
 
 import (
 	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
 )
 
-type BookService interface {
-	CreateBook(payload *model.BookRequest) (*model.BookResponse, error)
-	GetBook(id string) (*model.BookResponse, error)
-	ListBook(limit int, page int) ([]*model.BookResponse, *model.Pagination, error)
-	UpdateBook(id string, payload *model.BookRequest) (*model.BookResponse, error)
-	DeleteBook(id string) error
+type BookUsecase interface {
+	Create(payload *model.BookRequest) (*model.BookResponse, error)
+	Get(id string) (*model.BookResponse, error)
+	List(limit int, page int) ([]*model.BookResponse, *model.Pagination, error)
+	Update(id string, payload *model.BookRequest) (*model.BookResponse, error)
+	Delete(id string) error
 }
 
-type bookService struct {
+type bookUsecase struct {
 	repository repository.BookRepository
 }
 
-func NewBookService(repository repository.BookRepository) BookService {
-	return &bookService{repository}
+func NewBookUsecase(repository repository.BookRepository) BookUsecase {
+	return &bookUsecase{repository}
 }
 
-func (b *bookService) CreateBook(payload *model.BookRequest) (*model.BookResponse, error) {
+func (c *bookUsecase) Create(payload *model.BookRequest) (*model.BookResponse, error) {
 	data := model.Book{
 		Title:  payload.Title,
 		Author: payload.Author,
 	}
 
-	book, err := b.repository.Create(&data)
+	book, err := c.repository.Create(&data)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +43,8 @@ func (b *bookService) CreateBook(payload *model.BookRequest) (*model.BookRespons
 	return result, nil
 }
 
-func (b *bookService) GetBook(id string) (*model.BookResponse, error) {
-	book, err := b.repository.Find(id)
+func (c *bookUsecase) Get(id string) (*model.BookResponse, error) {
+	book, err := c.repository.Find(id)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +60,8 @@ func (b *bookService) GetBook(id string) (*model.BookResponse, error) {
 	return result, nil
 }
 
-func (b *bookService) ListBook(limit int, page int) ([]*model.BookResponse, *model.Pagination, error) {
-	books, pagination, err := b.repository.List(limit, page)
+func (c *bookUsecase) List(limit int, page int) ([]*model.BookResponse, *model.Pagination, error) {
+	books, pagination, err := c.repository.List(limit, page)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -82,13 +82,13 @@ func (b *bookService) ListBook(limit int, page int) ([]*model.BookResponse, *mod
 	return result, pagination, nil
 }
 
-func (b *bookService) UpdateBook(id string, payload *model.BookRequest) (*model.BookResponse, error) {
+func (c *bookUsecase) Update(id string, payload *model.BookRequest) (*model.BookResponse, error) {
 	data := model.Book{
 		Title:  payload.Title,
 		Author: payload.Author,
 	}
 
-	book, err := b.repository.Update(id, data)
+	book, err := c.repository.Update(id, data)
 	if err != nil {
 		return nil, err
 	}
@@ -104,8 +104,8 @@ func (b *bookService) UpdateBook(id string, payload *model.BookRequest) (*model.
 	return result, nil
 }
 
-func (b *bookService) DeleteBook(id string) error {
-	err := b.repository.Delete(id)
+func (c *bookUsecase) Delete(id string) error {
+	err := c.repository.Delete(id)
 	if err != nil {
 		return err
 	}

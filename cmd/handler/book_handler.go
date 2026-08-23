@@ -6,16 +6,16 @@ import (
 
 	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/model"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/service"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
 
 type BookHandler struct {
-	service service.BookService
+	usecase usecase.BookUsecase
 }
 
-func NewBookHandler(service service.BookService) *BookHandler {
-	return &BookHandler{service}
+func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
+	return &BookHandler{usecase}
 }
 
 func (b *BookHandler) Create(ctx *gin.Context) {
@@ -25,7 +25,7 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	response, err := b.service.CreateBook(&book)
+	response, err := b.usecase.Create(&book)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -38,7 +38,7 @@ func (b *BookHandler) List(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
 
-	response, pagination, err := b.service.ListBook(limit, page)
+	response, pagination, err := b.usecase.List(limit, page)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -57,7 +57,7 @@ func (b *BookHandler) List(ctx *gin.Context) {
 func (b *BookHandler) Find(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	response, err := b.service.GetBook(id)
+	response, err := b.usecase.Get(id)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -75,7 +75,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	response, err := b.service.UpdateBook(id, &book)
+	response, err := b.usecase.Update(id, &book)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -87,7 +87,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 func (b *BookHandler) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	err := b.service.DeleteBook(id)
+	err := b.usecase.Delete(id)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return

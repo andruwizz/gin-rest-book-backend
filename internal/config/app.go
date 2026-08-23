@@ -4,7 +4,7 @@ import (
 	"github.com/andruwizz/gin-book-sharing-backend/cmd/handler"
 	"github.com/andruwizz/gin-book-sharing-backend/cmd/routes"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/service"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ func Bootstrap(config *BootstrapConfig) {
 	bookRepository := repository.NewBookRepository(config.DB)
 
 	// Setup Service
-	bookService := service.NewBookService(bookRepository)
+	bookService := usecase.NewBookUsecase(bookRepository)
 
 	// Setup Handler
 	bookHandler := handler.NewBookHandler(bookService)
