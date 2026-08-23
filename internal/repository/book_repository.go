@@ -12,7 +12,7 @@ import (
 type BookRepository interface {
 	Create(data *model.Book) (*model.Book, error)
 	Find(id string) (*model.Book, error)
-	List(limit int, page int) (*[]model.Book, error)
+	List(limit int, page int) (*[]model.Book, *model.Pagination, error)
 	Update(id string, data model.Book) (*model.Book, error)
 	Delete(id string) error
 }
@@ -50,7 +50,7 @@ func (b *bookRepository) Find(id string) (*model.Book, error) {
 	return &book, nil
 }
 
-func (b *bookRepository) List(limit int, page int) (*[]model.Book, error) {
+func (b *bookRepository) List(limit int, page int) (*[]model.Book, *model.Pagination, error) {
 	var books []model.Book
 	var pagination model.Pagination
 
@@ -65,17 +65,18 @@ func (b *bookRepository) List(limit int, page int) (*[]model.Book, error) {
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, err
+			return nil, nil, nil
 		}
+		return nil, nil, err
 	}
 
-	return &books, nil
+	return &books, &pagination, nil
 }
 
 func (b *bookRepository) Update(id string, data model.Book) (*model.Book, error) {
 	var book model.Book
 
-	_, err := b.Find(id)
+	curr, err := b.Find(id)
 	if err != nil {
 		return nil, err
 	}
@@ -90,6 +91,8 @@ func (b *bookRepository) Update(id string, data model.Book) (*model.Book, error)
 	if err != nil {
 		return nil, err
 	}
+	book.Id = curr.Id
+	book.CreatedAt = curr.CreatedAt
 
 	return &book, nil
 }

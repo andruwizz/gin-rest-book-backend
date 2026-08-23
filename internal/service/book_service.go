@@ -8,7 +8,7 @@ import (
 type BookService interface {
 	CreateBook(payload *model.BookRequest) (*model.BookResponse, error)
 	GetBook(id string) (*model.BookResponse, error)
-	ListBook(limit int, page int) ([]*model.BookResponse, error)
+	ListBook(limit int, page int) ([]*model.BookResponse, *model.Pagination, error)
 	UpdateBook(id string, payload *model.BookRequest) (*model.BookResponse, error)
 	DeleteBook(id string) error
 }
@@ -60,10 +60,10 @@ func (b *bookService) GetBook(id string) (*model.BookResponse, error) {
 	return result, nil
 }
 
-func (b *bookService) ListBook(limit int, page int) ([]*model.BookResponse, error) {
-	books, err := b.repository.List(limit, page)
+func (b *bookService) ListBook(limit int, page int) ([]*model.BookResponse, *model.Pagination, error) {
+	books, pagination, err := b.repository.List(limit, page)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	result := []*model.BookResponse{}
@@ -79,7 +79,7 @@ func (b *bookService) ListBook(limit int, page int) ([]*model.BookResponse, erro
 		result = append(result, &book)
 	}
 
-	return result, nil
+	return result, pagination, nil
 }
 
 func (b *bookService) UpdateBook(id string, payload *model.BookRequest) (*model.BookResponse, error) {

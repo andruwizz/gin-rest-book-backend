@@ -26,7 +26,8 @@ func (b *Book) BeforeCreate(tx *gorm.DB) error {
 }
 
 func (b *Book) BeforeUpdate(tx *gorm.DB) error {
-	tx.Statement.SetColumn("UpdatedAt", time.Now().Unix())
+	time := time.Now().UnixMilli()
+	tx.Statement.SetColumn("UpdatedAt", time)
 
 	return nil
 }
