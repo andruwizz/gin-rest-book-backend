@@ -13,8 +13,8 @@ import (
 type BookRepository interface {
 	Create(data *entity.Book) (*entity.Book, error)
 	Find(id string) (*entity.Book, error)
-	List(limit int, page int) (*[]entity.Book, *dto.Pagination, error)
-	Update(id string, data entity.Book) (*entity.Book, error)
+	List(limit int, page int) ([]*entity.Book, *dto.Pagination, error)
+	Update(id string, data *entity.Book) (*entity.Book, error)
 	Delete(id string) error
 }
 
@@ -51,16 +51,23 @@ func (b *bookRepository) Find(id string) (*entity.Book, error) {
 	return &book, nil
 }
 
-func (b *bookRepository) List(limit int, page int) (*[]entity.Book, *dto.Pagination, error) {
+func (b *bookRepository) List(limit int, page int) ([]*entity.Book, *dto.Pagination, error) {
 	var books []entity.Book
 	var pagination dto.Pagination
+	var totalRecords int64
 
 	query := b.db
 
 	pagination.Limit = limit
 	pagination.Page = page
 
-	err := query.Scopes(b.Paginate(books, &pagination, query)).
+	query.Model(books).Count(&totalRecords)
+
+	pagination.TotalRecords = totalRecords
+	pagination.TotalPage = int(math.Ceil(float64(totalRecords) / float64(pagination.GetPageLimit())))
+	pagination.Records = int64(pagination.Limit*(pagination.Page-1)) + int64(len(books))
+
+	err := query.Clauses(clause.Limit{Offset: pagination.GetOffset(), Limit: &pagination.Limit}).
 		Find(&books).
 		Error
 
@@ -71,10 +78,15 @@ func (b *bookRepository) List(limit int, page int) (*[]entity.Book, *dto.Paginat
 		return nil, nil, err
 	}
 
-	return &books, &pagination, nil
+	data := []*entity.Book{}
+	for _, value := range books {
+		data = append(data, &value)
+	}
+
+	return data, &pagination, nil
 }
 
-func (b *bookRepository) Update(id string, data entity.Book) (*entity.Book, error) {
+func (b *bookRepository) Update(id string, data *entity.Book) (*entity.Book, error) {
 	var book entity.Book
 
 	curr, err := b.Find(id)
@@ -86,7 +98,7 @@ func (b *bookRepository) Update(id string, data entity.Book) (*entity.Book, erro
 		Model(&book).
 		Where("id = ?", id).
 		Clauses(clause.Returning{}).
-		Updates(data).
+		Updates(&data).
 		Error
 
 	if err != nil {
@@ -114,20 +126,4 @@ func (b *bookRepository) Delete(id string) error {
 	}
 
 	return nil
-}
-
-func (b *bookRepository) Paginate(value []entity.Book, pagination *dto.Pagination, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
-	var totalRecords int64
-	var currRecord int64
-
-	currRecord = int64(len(value))
-
-	b.db.Model(value).Count(&totalRecords)
-	pagination.TotalRecords = totalRecords
-	pagination.TotalPage = int(math.Ceil(float64(totalRecords) / float64(pagination.GetPageLimit())))
-	pagination.Records = int64(pagination.Limit*(pagination.Page-1)) + int64(currRecord)
-
-	return func(db *gorm.DB) *gorm.DB {
-		return db.Offset(pagination.GetOffset()).Limit(pagination.Limit)
-	}
 }

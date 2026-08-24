@@ -19,69 +19,62 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 }
 
 func (b *BookHandler) Create(ctx *gin.Context) {
-	var book dto.BookRequest
-	if err := ctx.ShouldBind(&book); err != nil {
+	var req dto.BookRequest
+	if err := ctx.ShouldBind(&req); err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	response, err := b.usecase.Create(&book)
+	res, err := b.usecase.Create(&req)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	helper.OK(ctx, response)
+	helper.OK(ctx, res)
 }
 
 func (b *BookHandler) List(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
 
-	response, pagination, err := b.usecase.List(limit, page)
+	res, meta, err := b.usecase.List(limit, page)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	var meta = helper.Meta{
-		Page:       pagination.Page,
-		PerPage:    pagination.Limit,
-		Total:      int(pagination.TotalRecords),
-		TotalPages: pagination.TotalPage,
-	}
-
-	helper.OkWithMeta(ctx, response, meta)
+	helper.OkWithMeta(ctx, res, *meta)
 }
 
 func (b *BookHandler) Find(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	response, err := b.usecase.Get(id)
+	res, err := b.usecase.Get(id)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	helper.OK(ctx, response)
+	helper.OK(ctx, res)
 }
 
 func (b *BookHandler) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var book dto.BookRequest
-	if err := ctx.ShouldBind(&book); err != nil {
+	var req dto.BookRequest
+	if err := ctx.ShouldBind(&req); err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	response, err := b.usecase.Update(id, &book)
+	res, err := b.usecase.Update(id, &req)
 	if err != nil {
 		helper.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	helper.OK(ctx, response)
+	helper.OK(ctx, res)
 }
 
 func (b *BookHandler) Delete(ctx *gin.Context) {
