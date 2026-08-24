@@ -12,8 +12,8 @@ import (
 
 type BookRepository interface {
 	Create(data *entity.Book) (*entity.Book, error)
+	List(limit int, page int) ([]entity.Book, *dto.Pagination, error)
 	Find(id string) (*entity.Book, error)
-	List(limit int, page int) ([]*entity.Book, *dto.Pagination, error)
 	Update(id string, data *entity.Book) (*entity.Book, error)
 	Delete(id string) error
 }
@@ -35,23 +35,7 @@ func (b *bookRepository) Create(data *entity.Book) (*entity.Book, error) {
 	return data, nil
 }
 
-func (b *bookRepository) Find(id string) (*entity.Book, error) {
-	var book entity.Book
-
-	err := b.db.
-		Model(&entity.Book{}).
-		Where("id = ?", id).
-		First(&book).
-		Error
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &book, nil
-}
-
-func (b *bookRepository) List(limit int, page int) ([]*entity.Book, *dto.Pagination, error) {
+func (b *bookRepository) List(limit int, page int) ([]entity.Book, *dto.Pagination, error) {
 	var books []entity.Book
 	var pagination dto.Pagination
 	var totalRecords int64
@@ -78,12 +62,23 @@ func (b *bookRepository) List(limit int, page int) ([]*entity.Book, *dto.Paginat
 		return nil, nil, err
 	}
 
-	data := []*entity.Book{}
-	for _, value := range books {
-		data = append(data, &value)
+	return books, &pagination, nil
+}
+
+func (b *bookRepository) Find(id string) (*entity.Book, error) {
+	var book entity.Book
+
+	err := b.db.
+		Model(&entity.Book{}).
+		Where("id = ?", id).
+		First(&book).
+		Error
+
+	if err != nil {
+		return nil, err
 	}
 
-	return data, &pagination, nil
+	return &book, nil
 }
 
 func (b *bookRepository) Update(id string, data *entity.Book) (*entity.Book, error) {
