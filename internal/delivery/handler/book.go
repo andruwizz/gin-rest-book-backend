@@ -48,7 +48,7 @@ func (b *BookHandler) List(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.List(req.Limit, req.Page)
+	res, err := b.usecase.List(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -70,7 +70,7 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Get(req.Id)
+	res, err := b.usecase.Get(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -94,7 +94,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Update(req.Id, &req)
+	res, err := b.usecase.Update(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -116,7 +116,7 @@ func (b *BookHandler) Delete(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Delete(req.Id)
+	res, err := b.usecase.Delete(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,

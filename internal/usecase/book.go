@@ -7,11 +7,11 @@ import (
 )
 
 type BookUsecase interface {
-	Create(payload *dto.BookCreateRequest) (*dto.BookCreateResponse, error)
-	List(limit int, page int) (*dto.BookListResponse, error)
-	Get(id string) (*dto.BookGetResponse, error)
-	Update(id string, payload *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error)
-	Delete(id string) (*dto.BookDeleteResponse, error)
+	Create(req *dto.BookCreateRequest) (*dto.BookCreateResponse, error)
+	List(req *dto.BookListRequest) (*dto.BookListResponse, error)
+	Get(req *dto.BookGetRequest) (*dto.BookGetResponse, error)
+	Update(req *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error)
+	Delete(req *dto.BookDeleteRequest) (*dto.BookDeleteResponse, error)
 }
 
 type bookUsecase struct {
@@ -33,7 +33,7 @@ func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateRespons
 		return nil, err
 	}
 
-	response := dto.BookCreateResponse{
+	res := dto.BookCreateResponse{
 		Success: true,
 		Data: &dto.BookResponse{
 			Id:        Data.Id,
@@ -44,11 +44,11 @@ func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateRespons
 		},
 	}
 
-	return &response, nil
+	return &res, nil
 }
 
-func (c *bookUsecase) List(limit int, page int) (*dto.BookListResponse, error) {
-	Data, pagination, err := c.repository.List(limit, page)
+func (c *bookUsecase) List(req *dto.BookListRequest) (*dto.BookListResponse, error) {
+	Data, pagination, err := c.repository.List(req.Limit, req.Page)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *bookUsecase) List(limit int, page int) (*dto.BookListResponse, error) {
 		listing = append(listing, book)
 	}
 
-	response := dto.BookListResponse{
+	res := dto.BookListResponse{
 		Success: true,
 		Data:    listing,
 		Meta: &dto.BookMeta{
@@ -76,16 +76,16 @@ func (c *bookUsecase) List(limit int, page int) (*dto.BookListResponse, error) {
 		},
 	}
 
-	return &response, nil
+	return &res, nil
 }
 
-func (c *bookUsecase) Get(id string) (*dto.BookGetResponse, error) {
-	Data, err := c.repository.Find(id)
+func (c *bookUsecase) Get(req *dto.BookGetRequest) (*dto.BookGetResponse, error) {
+	Data, err := c.repository.Find(req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	response := dto.BookGetResponse{
+	res := dto.BookGetResponse{
 		Success: true,
 		Data: &dto.BookResponse{
 			Id:        Data.Id,
@@ -96,21 +96,21 @@ func (c *bookUsecase) Get(id string) (*dto.BookGetResponse, error) {
 		},
 	}
 
-	return &response, nil
+	return &res, nil
 }
 
-func (c *bookUsecase) Update(id string, req *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error) {
+func (c *bookUsecase) Update(req *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error) {
 	payload := &entity.Book{
 		Title:  req.Title,
 		Author: req.Author,
 	}
 
-	Data, err := c.repository.Update(id, payload)
+	Data, err := c.repository.Update(req.Id, payload)
 	if err != nil {
 		return nil, err
 	}
 
-	response := dto.BookUpdateResponse{
+	res := dto.BookUpdateResponse{
 		Success: true,
 		Data: &dto.BookResponse{
 			Id:        Data.Id,
@@ -121,18 +121,18 @@ func (c *bookUsecase) Update(id string, req *dto.BookUpdateRequest) (*dto.BookUp
 		},
 	}
 
-	return &response, nil
+	return &res, nil
 }
 
-func (c *bookUsecase) Delete(id string) (*dto.BookDeleteResponse, error) {
-	err := c.repository.Delete(id)
+func (c *bookUsecase) Delete(req *dto.BookDeleteRequest) (*dto.BookDeleteResponse, error) {
+	err := c.repository.Delete(req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	response := dto.BookDeleteResponse{
+	res := dto.BookDeleteResponse{
 		Success: true,
 	}
 
-	return &response, nil
+	return &res, nil
 }
