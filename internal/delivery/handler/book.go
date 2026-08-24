@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
@@ -18,7 +17,7 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 }
 
 func (b *BookHandler) Create(ctx *gin.Context) {
-	var req dto.BookRequest
+	var req dto.BookCreateRequest
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -40,10 +39,16 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 }
 
 func (b *BookHandler) List(ctx *gin.Context) {
-	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
-	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
+	var req dto.BookListRequest
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   gin.H{"code": "INVALID_DATA", "message": err.Error()},
+		})
+		return
+	}
 
-	res, err := b.usecase.List(limit, page)
+	res, err := b.usecase.List(req.Limit, req.Page)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -56,9 +61,16 @@ func (b *BookHandler) List(ctx *gin.Context) {
 }
 
 func (b *BookHandler) Find(ctx *gin.Context) {
-	id := ctx.Param("id")
+	var req dto.BookGetRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   gin.H{"code": "INVALID_ID", "message": err.Error()},
+		})
+		return
+	}
 
-	res, err := b.usecase.Get(id)
+	res, err := b.usecase.Get(req.Id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -71,9 +83,9 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 }
 
 func (b *BookHandler) Update(ctx *gin.Context) {
-	id := ctx.Param("id")
+	var req dto.BookUpdateRequest
+	req.Id = ctx.Param("id")
 
-	var req dto.BookRequest
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -82,7 +94,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Update(id, &req)
+	res, err := b.usecase.Update(req.Id, &req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
@@ -95,9 +107,16 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 }
 
 func (b *BookHandler) Delete(ctx *gin.Context) {
-	id := ctx.Param("id")
+	var req dto.BookDeleteRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   gin.H{"code": "INVALID_DATA", "message": err.Error()},
+		})
+		return
+	}
 
-	res, err := b.usecase.Delete(id)
+	res, err := b.usecase.Delete(req.Id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,

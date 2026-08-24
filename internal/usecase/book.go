@@ -7,10 +7,10 @@ import (
 )
 
 type BookUsecase interface {
-	Create(payload *dto.BookRequest) (*dto.BookCreateResponse, error)
+	Create(payload *dto.BookCreateRequest) (*dto.BookCreateResponse, error)
 	List(limit int, page int) (*dto.BookListResponse, error)
 	Get(id string) (*dto.BookGetResponse, error)
-	Update(id string, payload *dto.BookRequest) (*dto.BookUpdateResponse, error)
+	Update(id string, payload *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error)
 	Delete(id string) (*dto.BookDeleteResponse, error)
 }
 
@@ -22,7 +22,7 @@ func NewBookUsecase(repository repository.BookRepository) BookUsecase {
 	return &bookUsecase{repository}
 }
 
-func (c *bookUsecase) Create(req *dto.BookRequest) (*dto.BookCreateResponse, error) {
+func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateResponse, error) {
 	payload := &entity.Book{
 		Title:  req.Title,
 		Author: req.Author,
@@ -99,7 +99,7 @@ func (c *bookUsecase) Get(id string) (*dto.BookGetResponse, error) {
 	return &response, nil
 }
 
-func (c *bookUsecase) Update(id string, req *dto.BookRequest) (*dto.BookUpdateResponse, error) {
+func (c *bookUsecase) Update(id string, req *dto.BookUpdateRequest) (*dto.BookUpdateResponse, error) {
 	payload := &entity.Book{
 		Title:  req.Title,
 		Author: req.Author,
