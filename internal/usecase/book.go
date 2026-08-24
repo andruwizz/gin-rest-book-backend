@@ -28,7 +28,7 @@ func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateRespons
 		Author: req.Author,
 	}
 
-	Data, err := c.repository.Create(payload)
+	data, err := c.repository.Create(payload)
 	if err != nil {
 		return nil, err
 	}
@@ -36,11 +36,11 @@ func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateRespons
 	res := dto.BookCreateResponse{
 		Success: true,
 		Data: &dto.BookResponse{
-			Id:        Data.Id,
-			Title:     Data.Title,
-			Author:    Data.Author,
-			CreatedAt: Data.CreatedAt,
-			UpdatedAt: Data.UpdatedAt,
+			Id:        data.Id,
+			Title:     data.Title,
+			Author:    data.Author,
+			CreatedAt: data.CreatedAt,
+			UpdatedAt: data.UpdatedAt,
 		},
 	}
 
@@ -48,13 +48,13 @@ func (c *bookUsecase) Create(req *dto.BookCreateRequest) (*dto.BookCreateRespons
 }
 
 func (c *bookUsecase) List(req *dto.BookListRequest) (*dto.BookListResponse, error) {
-	Data, pagination, err := c.repository.List(req.Limit, req.Page)
+	data, pagination, err := c.repository.List(req.Limit, req.Page)
 	if err != nil {
 		return nil, err
 	}
 
 	var listing []*dto.BookResponse
-	for _, value := range Data {
+	for _, value := range data {
 		book := &dto.BookResponse{
 			Id:        value.Id,
 			Title:     value.Title,
@@ -80,7 +80,7 @@ func (c *bookUsecase) List(req *dto.BookListRequest) (*dto.BookListResponse, err
 }
 
 func (c *bookUsecase) Get(req *dto.BookGetRequest) (*dto.BookGetResponse, error) {
-	Data, err := c.repository.Find(req.Id)
+	data, err := c.repository.Find(req.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -88,11 +88,11 @@ func (c *bookUsecase) Get(req *dto.BookGetRequest) (*dto.BookGetResponse, error)
 	res := dto.BookGetResponse{
 		Success: true,
 		Data: &dto.BookResponse{
-			Id:        Data.Id,
-			Title:     Data.Title,
-			Author:    Data.Author,
-			CreatedAt: Data.CreatedAt,
-			UpdatedAt: Data.UpdatedAt,
+			Id:        data.Id,
+			Title:     data.Title,
+			Author:    data.Author,
+			CreatedAt: data.CreatedAt,
+			UpdatedAt: data.UpdatedAt,
 		},
 	}
 
@@ -105,7 +105,7 @@ func (c *bookUsecase) Update(req *dto.BookUpdateRequest) (*dto.BookUpdateRespons
 		Author: req.Author,
 	}
 
-	Data, err := c.repository.Update(req.Id, payload)
+	data, err := c.repository.Update(req.Id, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -113,11 +113,11 @@ func (c *bookUsecase) Update(req *dto.BookUpdateRequest) (*dto.BookUpdateRespons
 	res := dto.BookUpdateResponse{
 		Success: true,
 		Data: &dto.BookResponse{
-			Id:        Data.Id,
-			Title:     Data.Title,
-			Author:    Data.Author,
-			CreatedAt: Data.CreatedAt,
-			UpdatedAt: Data.UpdatedAt,
+			Id:        data.Id,
+			Title:     data.Title,
+			Author:    data.Author,
+			CreatedAt: data.CreatedAt,
+			UpdatedAt: data.UpdatedAt,
 		},
 	}
 
