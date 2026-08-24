@@ -108,7 +108,7 @@ func (b *bookRepository) Update(id string, data *entity.Book) (*entity.Book, err
 func (b *bookRepository) Delete(id string) error {
 	_, err := b.Find(id)
 	if err != nil {
-		return nil
+		return err
 	}
 
 	err = b.db.
