@@ -1,0 +1,12 @@
+basePath: /api/v1
+host: localhost:3000
+info:
+  contact: {}
+  description: This is a Book Sharing API
+  license:
+    name: MIT
+    url: https://mit-license.org/
+  title: Book Sharing API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
