@@ -14,12 +14,35 @@
     "basePath": "/api/v1",
     "paths": {
         "/books": {
-            "post": {
-                "security": [
+            "get": {
+                "description": "Get list of books data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "List all book",
+                "parameters": [
                     {
-                        "ApiKeyAuth": []
+                        "type": "integer",
+                        "description": "Item count per page",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List page number",
+                        "name": "page",
+                        "in": "query"
                     }
                 ],
+                "responses": {}
+            },
+            "post": {
                 "description": "Input new book with title and author name",
                 "consumes": [
                     "application/json"
@@ -31,34 +54,132 @@
                     "Book"
                 ],
                 "summary": "Create a new book",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.BookResponse"
+                            "$ref": "#/definitions/dto.BookCreateRequest"
                         }
                     }
-                }
+                ],
+                "responses": {}
+            }
+        },
+        "/books/{id}": {
+            "get": {
+                "description": "Get single book data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Find a book",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Book Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "put": {
+                "description": "Update existing book",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Update a book",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Book Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.BookUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "description": "Delete single book data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Delete a book",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Book Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
             }
         }
     },
     "definitions": {
-        "dto.BookResponse": {
+        "dto.BookCreateRequest": {
             "type": "object",
+            "required": [
+                "author",
+                "title"
+            ],
             "properties": {
                 "author": {
                     "type": "string"
                 },
-                "created_at": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.BookUpdateRequest": {
+            "type": "object",
+            "required": [
+                "author",
+                "id",
+                "title"
+            ],
+            "properties": {
+                "author": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }

@@ -1,17 +1,27 @@
 basePath: /api/v1
 definitions:
-  dto.BookResponse:
+  dto.BookCreateRequest:
     properties:
       author:
         type: string
-      created_at:
+      title:
+        type: string
+    required:
+    - author
+    - title
+    type: object
+  dto.BookUpdateRequest:
+    properties:
+      author:
         type: string
       id:
         type: string
       title:
         type: string
-      updated_at:
-        type: string
+    required:
+    - author
+    - id
+    - title
     type: object
 host: localhost:3000
 info:
@@ -24,20 +34,95 @@ info:
   version: "1.0"
 paths:
   /books:
+    get:
+      consumes:
+      - application/json
+      description: Get list of books data
+      parameters:
+      - description: Item count per page
+        in: query
+        name: limit
+        type: integer
+      - description: List page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: List all book
+      tags:
+      - Book
     post:
       consumes:
       - application/json
       description: Input new book with title and author name
+      parameters:
+      - description: Request body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BookCreateRequest'
       produces:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.BookResponse'
-      security:
-      - ApiKeyAuth: []
+      responses: {}
       summary: Create a new book
+      tags:
+      - Book
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete single book data
+      parameters:
+      - description: Book Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete a book
+      tags:
+      - Book
+    get:
+      consumes:
+      - application/json
+      description: Get single book data
+      parameters:
+      - description: Book Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Find a book
+      tags:
+      - Book
+    put:
+      consumes:
+      - application/json
+      description: Update existing book
+      parameters:
+      - description: Book Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BookUpdateRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update a book
       tags:
       - Book
 swagger: "2.0"

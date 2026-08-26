@@ -17,14 +17,13 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 	return &BookHandler{usecase}
 }
 
-// Create Book godoc
+// CreateBook godoc
 // @Summary Create a new book
 // @Description Input new book with title and author name
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Success 200 {object} dto.BookResponse
-// @Security ApiKeyAuth
+// @Param Body body dto.BookCreateRequest true "Request body"
 // @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
 	var req dto.BookCreateRequest
@@ -42,6 +41,15 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 	response.Success(ctx, http.StatusCreated, res, nil)
 }
 
+// ListBook godoc
+// @Summary List all book
+// @Description Get list of books data
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param limit query int false "Item count per page"
+// @Param page query int false "List page number"
+// @Router /books [GET]
 func (b *BookHandler) List(ctx *gin.Context) {
 	var req dto.BookListRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -58,6 +66,14 @@ func (b *BookHandler) List(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, res, *meta)
 }
 
+// FindBook godoc
+// @Summary Find a book
+// @Description Get single book data
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "Book Id"
+// @Router /books/{id} [GET]
 func (b *BookHandler) Find(ctx *gin.Context) {
 	var req dto.BookGetRequest
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -74,6 +90,15 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, res, nil)
 }
 
+// UpdateBook godoc
+// @Summary Update a book
+// @Description Update existing book
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "Book Id"
+// @Param Body body dto.BookUpdateRequest true "Request body"
+// @Router /books/{id} [PUT]
 func (b *BookHandler) Update(ctx *gin.Context) {
 	var req dto.BookUpdateRequest
 	req.Id = ctx.Param("id")
@@ -92,6 +117,14 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, res, nil)
 }
 
+// DeleteBook godoc
+// @Summary Delete a book
+// @Description Delete single book data
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "Book Id"
+// @Router /books/{id} [DELETE]
 func (b *BookHandler) Delete(ctx *gin.Context) {
 	var req dto.BookDeleteRequest
 	if err := ctx.ShouldBindUri(&req); err != nil {
