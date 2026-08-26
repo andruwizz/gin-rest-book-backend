@@ -17,6 +17,15 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 	return &BookHandler{usecase}
 }
 
+// Create Book godoc
+// @Summary Create a new book
+// @Description Input new book with title and author name
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Success 200 {object} dto.BookResponse
+// @Security ApiKeyAuth
+// @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
 	var req dto.BookCreateRequest
 	if err := ctx.ShouldBind(&req); err != nil {

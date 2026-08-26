@@ -9,6 +9,9 @@ endif
 run:
 	go run cmd/main.go
 
+api-docs:
+	swag init -g ./cmd/main.go
+
 migration $$(enter):
 	@read -p "Migration name:" migration_name; \
 	migrate create -ext sql -dir database/migrations $$migration_name

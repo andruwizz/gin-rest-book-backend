@@ -1,4 +1,18 @@
 basePath: /api/v1
+definitions:
+  dto.BookResponse:
+    properties:
+      author:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -8,5 +22,22 @@ info:
     url: https://mit-license.org/
   title: Book Sharing API
   version: "1.0"
-paths: {}
+paths:
+  /books:
+    post:
+      consumes:
+      - application/json
+      description: Input new book with title and author name
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BookResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new book
+      tags:
+      - Book
 swagger: "2.0"
