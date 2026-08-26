@@ -24,6 +24,8 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 // @Accept json
 // @Produce json
 // @Param Body body dto.BookCreateRequest true "Request body"
+// @Success 201 {object} response.ApiDataResponse{data=entity.Book}
+// @Failure 400 {object} response.ApiErrorResponse
 // @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
 	var req dto.BookCreateRequest
@@ -49,6 +51,8 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 // @Produce json
 // @Param limit query int false "Item count per page"
 // @Param page query int false "List page number"
+// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
+// @Failure 400 {object} response.ApiErrorResponse
 // @Router /books [GET]
 func (b *BookHandler) List(ctx *gin.Context) {
 	var req dto.BookListRequest
@@ -73,6 +77,8 @@ func (b *BookHandler) List(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
+// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
+// @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [GET]
 func (b *BookHandler) Find(ctx *gin.Context) {
 	var req dto.BookGetRequest
@@ -98,6 +104,8 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 // @Produce json
 // @Param id path string true "Book Id"
 // @Param Body body dto.BookUpdateRequest true "Request body"
+// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
+// @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [PUT]
 func (b *BookHandler) Update(ctx *gin.Context) {
 	var req dto.BookUpdateRequest
@@ -124,6 +132,8 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
+// @Success 200 {object} response.ApiEmptyResponse
+// @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [DELETE]
 func (b *BookHandler) Delete(ctx *gin.Context) {
 	var req dto.BookDeleteRequest

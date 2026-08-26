@@ -23,6 +23,44 @@ definitions:
     - id
     - title
     type: object
+  entity.Book:
+    properties:
+      author:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  response.ApiDataResponse:
+    properties:
+      data: {}
+      success:
+        type: boolean
+    type: object
+  response.ApiEmptyResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  response.ApiErrorDetail:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  response.ApiErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ApiErrorDetail'
+      success:
+        type: boolean
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -49,7 +87,20 @@ paths:
         type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ApiDataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Book'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiErrorResponse'
       summary: List all book
       tags:
       - Book
@@ -66,7 +117,20 @@ paths:
           $ref: '#/definitions/dto.BookCreateRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ApiDataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Book'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiErrorResponse'
       summary: Create a new book
       tags:
       - Book
@@ -83,7 +147,15 @@ paths:
         type: string
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ApiEmptyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiErrorResponse'
       summary: Delete a book
       tags:
       - Book
@@ -99,7 +171,20 @@ paths:
         type: string
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ApiDataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Book'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiErrorResponse'
       summary: Find a book
       tags:
       - Book
@@ -121,7 +206,20 @@ paths:
           $ref: '#/definitions/dto.BookUpdateRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ApiDataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Book'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiErrorResponse'
       summary: Update a book
       tags:
       - Book
