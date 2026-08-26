@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
@@ -23,18 +23,18 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Param Body body dto.BookCreateRequest true "Request body"
+// @Param Body body request.BookCreate true "Request body"
 // @Success 201 {object} response.ApiDataResponse{data=entity.Book}
 // @Failure 400 {object} response.ApiErrorResponse
 // @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
-	var req dto.BookCreateRequest
+	req := new(request.BookCreate)
 	if err := ctx.ShouldBind(&req); err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	res, err := b.usecase.Create(&req)
+	res, err := b.usecase.Create(req)
 	if err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -55,13 +55,13 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 // @Failure 400 {object} response.ApiErrorResponse
 // @Router /books [GET]
 func (b *BookHandler) List(ctx *gin.Context) {
-	var req dto.BookListRequest
+	req := new(request.BookList)
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	res, meta, err := b.usecase.List(&req)
+	res, meta, err := b.usecase.List(req)
 	if err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -81,13 +81,13 @@ func (b *BookHandler) List(ctx *gin.Context) {
 // @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [GET]
 func (b *BookHandler) Find(ctx *gin.Context) {
-	var req dto.BookGetRequest
+	req := new(request.BookGet)
 	if err := ctx.ShouldBindUri(&req); err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	res, err := b.usecase.Get(&req)
+	res, err := b.usecase.Get(req)
 	if err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -103,12 +103,12 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
-// @Param Body body dto.BookUpdateRequest true "Request body"
+// @Param Body body request.BookUpdate true "Request body"
 // @Success 200 {object} response.ApiDataResponse{data=entity.Book}
 // @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [PUT]
 func (b *BookHandler) Update(ctx *gin.Context) {
-	var req dto.BookUpdateRequest
+	req := new(request.BookUpdate)
 	req.Id = ctx.Param("id")
 
 	if err := ctx.ShouldBind(&req); err != nil {
@@ -116,7 +116,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Update(&req)
+	res, err := b.usecase.Update(req)
 	if err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
@@ -136,13 +136,13 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 // @Failure 400 {object} response.ApiErrorResponse
 // @Router /books/{id} [DELETE]
 func (b *BookHandler) Delete(ctx *gin.Context) {
-	var req dto.BookDeleteRequest
+	req := new(request.BookDelete)
 	if err := ctx.ShouldBindUri(&req); err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	err := b.usecase.Delete(&req)
+	err := b.usecase.Delete(req)
 	if err != nil {
 		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return

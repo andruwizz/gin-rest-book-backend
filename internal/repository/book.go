@@ -4,7 +4,6 @@ import (
 	"errors"
 	"math"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/dto"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -12,7 +11,7 @@ import (
 
 type BookRepository interface {
 	Create(data *entity.Book) (*entity.Book, error)
-	List(limit int, page int) ([]entity.Book, *dto.Pagination, error)
+	List(limit int, page int) ([]entity.Book, *entity.Pagination, error)
 	Find(id string) (*entity.Book, error)
 	Update(id string, data *entity.Book) (*entity.Book, error)
 	Delete(id string) error
@@ -35,9 +34,9 @@ func (b *bookRepository) Create(data *entity.Book) (*entity.Book, error) {
 	return data, nil
 }
 
-func (b *bookRepository) List(limit int, page int) ([]entity.Book, *dto.Pagination, error) {
+func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagination, error) {
 	var books []entity.Book
-	var pagination dto.Pagination
+	var pagination entity.Pagination
 	var totalRecords int64
 
 	query := b.db

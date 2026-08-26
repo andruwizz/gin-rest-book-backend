@@ -1,28 +1,5 @@
 basePath: /api/v1
 definitions:
-  dto.BookCreateRequest:
-    properties:
-      author:
-        type: string
-      title:
-        type: string
-    required:
-    - author
-    - title
-    type: object
-  dto.BookUpdateRequest:
-    properties:
-      author:
-        type: string
-      id:
-        type: string
-      title:
-        type: string
-    required:
-    - author
-    - id
-    - title
-    type: object
   entity.Book:
     properties:
       author:
@@ -35,6 +12,29 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  request.BookCreate:
+    properties:
+      author:
+        type: string
+      title:
+        type: string
+    required:
+    - author
+    - title
+    type: object
+  request.BookUpdate:
+    properties:
+      author:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    required:
+    - author
+    - id
+    - title
     type: object
   response.ApiDataResponse:
     properties:
@@ -114,7 +114,7 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/dto.BookCreateRequest'
+          $ref: '#/definitions/request.BookCreate'
       produces:
       - application/json
       responses:
@@ -203,7 +203,7 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/dto.BookUpdateRequest'
+          $ref: '#/definitions/request.BookUpdate'
       produces:
       - application/json
       responses:

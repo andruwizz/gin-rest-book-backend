@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.BookCreateRequest"
+                            "$ref": "#/definitions/request.BookCreate"
                         }
                     }
                 ],
@@ -199,7 +199,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.BookUpdateRequest"
+                            "$ref": "#/definitions/request.BookUpdate"
                         }
                     }
                 ],
@@ -269,40 +269,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.BookCreateRequest": {
-            "type": "object",
-            "required": [
-                "author",
-                "title"
-            ],
-            "properties": {
-                "author": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.BookUpdateRequest": {
-            "type": "object",
-            "required": [
-                "author",
-                "id",
-                "title"
-            ],
-            "properties": {
-                "author": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.Book": {
             "type": "object",
             "properties": {
@@ -319,6 +285,40 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.BookCreate": {
+            "type": "object",
+            "required": [
+                "author",
+                "title"
+            ],
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.BookUpdate": {
+            "type": "object",
+            "required": [
+                "author",
+                "id",
+                "title"
+            ],
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
