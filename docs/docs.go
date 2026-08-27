@@ -349,9 +349,7 @@ const docTemplate = `{
                 "code": {
                     "type": "string"
                 },
-                "message": {
-                    "type": "string"
-                }
+                "message": {}
             }
         },
         "response.ErrorResponse": {

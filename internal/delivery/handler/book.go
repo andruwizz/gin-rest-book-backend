@@ -30,13 +30,13 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 func (b *BookHandler) Create(ctx *gin.Context) {
 	req := new(request.BookCreate)
 	if err := ctx.ShouldBind(&req); err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorValidation(ctx, http.StatusBadRequest, "INVALID_DATA", err)
 		return
 	}
 
 	res, err := b.usecase.Create(req)
 	if err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err)
 		return
 	}
 
@@ -57,13 +57,13 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 func (b *BookHandler) List(ctx *gin.Context) {
 	req := new(request.BookList)
 	if err := ctx.ShouldBindQuery(&req); err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorValidation(ctx, http.StatusBadRequest, "INVALID_DATA", err)
 		return
 	}
 
 	res, pagination, err := b.usecase.List(req)
 	if err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err)
 		return
 	}
 
@@ -83,13 +83,13 @@ func (b *BookHandler) List(ctx *gin.Context) {
 func (b *BookHandler) Find(ctx *gin.Context) {
 	req := new(request.BookGet)
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorValidation(ctx, http.StatusBadRequest, "INVALID_DATA", err)
 		return
 	}
 
 	res, err := b.usecase.Get(req)
 	if err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err)
 		return
 	}
 
@@ -112,13 +112,13 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 	req.Id = ctx.Param("id")
 
 	if err := ctx.ShouldBind(&req); err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorValidation(ctx, http.StatusBadRequest, "INVALID_DATA", err)
 		return
 	}
 
 	res, err := b.usecase.Update(req)
 	if err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err)
 		return
 	}
 
@@ -138,13 +138,13 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 func (b *BookHandler) Delete(ctx *gin.Context) {
 	req := new(request.BookDelete)
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorValidation(ctx, http.StatusBadRequest, "INVALID_DATA", err)
 		return
 	}
 
 	err := b.usecase.Delete(req)
 	if err != nil {
-		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err)
 		return
 	}
 

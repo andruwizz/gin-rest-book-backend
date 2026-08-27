@@ -28,23 +28,3 @@ func BookCollection(ctx *gin.Context, code int, e []entity.Book, p *entity.Pagin
 
 	ctx.JSON(code, col)
 }
-
-func EmptyResource(ctx *gin.Context, code int) {
-	res := EmptyResponse{
-		Success: true,
-	}
-
-	ctx.JSON(code, res)
-}
-
-func ErrorResource(ctx *gin.Context, code int, errorCode, message string) {
-	res := ErrorResponse{
-		Success: false,
-		Error: ErrorDetail{
-			Code:    errorCode,
-			Message: message,
-		},
-	}
-
-	ctx.JSON(code, res)
-}
