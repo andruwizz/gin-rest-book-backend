@@ -10,8 +10,8 @@ import (
 )
 
 type BootstrapConfig struct {
-	DB         *gorm.DB
-	RouteGroup *gin.RouterGroup
+	DB  *gorm.DB
+	App *gin.Engine
 }
 
 func Bootstrap(config *BootstrapConfig) {
@@ -25,5 +25,9 @@ func Bootstrap(config *BootstrapConfig) {
 	bookHandler := handler.NewBookHandler(bookService)
 
 	// Setup Router
-	routes.BookRouter(config.RouteGroup, bookHandler)
+	rg := config.App.Group("/api/v1")
+	routes.BookRouter(rg, bookHandler)
+
+	// Setup API Documentation
+	NewSwaggo(config.App)
 }

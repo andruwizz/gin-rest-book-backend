@@ -26,9 +26,9 @@ type DataResponse struct {
 }
 
 type ListResponse struct {
-	Success bool `json:"success"`
-	Data    any  `json:"data"`
-	Meta    ListMeta
+	Success bool     `json:"success"`
+	Data    any      `json:"data"`
+	Meta    ListMeta `json:"meta"`
 }
 
 type ErrorResponse struct {
