@@ -2,14 +2,13 @@ package usecase
 
 import (
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
 )
 
 type BookUsecase interface {
 	Create(req *request.BookCreate) (*entity.Book, error)
-	List(req *request.BookList) ([]entity.Book, *response.Meta, error)
+	List(req *request.BookList) ([]entity.Book, *entity.Pagination, error)
 	Get(req *request.BookGet) (*entity.Book, error)
 	Update(req *request.BookUpdate) (*entity.Book, error)
 	Delete(req *request.BookDelete) error
@@ -37,20 +36,13 @@ func (c *bookUsecase) Create(req *request.BookCreate) (*entity.Book, error) {
 	return res, nil
 }
 
-func (c *bookUsecase) List(req *request.BookList) ([]entity.Book, *response.Meta, error) {
+func (c *bookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pagination, error) {
 	res, pagination, err := c.repository.List(req.Limit, req.Page)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var meta = &response.Meta{
-		Page:       pagination.Page,
-		Total:      int(pagination.TotalRecords),
-		TotalPages: pagination.TotalPage,
-		PerPage:    pagination.Limit,
-	}
-
-	return res, meta, nil
+	return res, pagination, nil
 }
 
 func (c *bookUsecase) Get(req *request.BookGet) (*entity.Book, error) {

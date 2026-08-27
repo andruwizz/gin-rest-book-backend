@@ -52,13 +52,16 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.ApiDataResponse"
+                                    "$ref": "#/definitions/response.ListResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Book"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Book"
+                                            }
                                         }
                                     }
                                 }
@@ -68,7 +71,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -102,7 +105,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.ApiDataResponse"
+                                    "$ref": "#/definitions/response.DataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -118,7 +121,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -152,7 +155,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.ApiDataResponse"
+                                    "$ref": "#/definitions/response.DataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -168,7 +171,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -209,7 +212,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.ApiDataResponse"
+                                    "$ref": "#/definitions/response.DataResponse"
                                 },
                                 {
                                     "type": "object",
@@ -225,7 +228,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -255,13 +258,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiEmptyResponse"
+                            "$ref": "#/definitions/response.EmptyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -323,7 +326,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ApiDataResponse": {
+        "response.DataResponse": {
             "type": "object",
             "properties": {
                 "data": {},
@@ -332,7 +335,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ApiEmptyResponse": {
+        "response.EmptyResponse": {
             "type": "object",
             "properties": {
                 "success": {
@@ -340,7 +343,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ApiErrorDetail": {
+        "response.ErrorDetail": {
             "type": "object",
             "properties": {
                 "code": {
@@ -351,11 +354,40 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ApiErrorResponse": {
+        "response.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
-                    "$ref": "#/definitions/response.ApiErrorDetail"
+                    "$ref": "#/definitions/response.ErrorDetail"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "response.ListMeta": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "per_page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.ListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "meta": {
+                    "$ref": "#/definitions/response.ListMeta"
                 },
                 "success": {
                     "type": "boolean"

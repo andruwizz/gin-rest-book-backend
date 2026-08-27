@@ -1,33 +1,33 @@
 package response
 
-type ApiErrorDetail struct {
+type ErrorDetail struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 }
 
-type ApiListMeta struct {
+type ListMeta struct {
 	Page       int `json:"page"`
 	PerPage    int `json:"per_page"`
 	Total      int `json:"total"`
 	TotalPages int `json:"total_pages"`
 }
 
-type ApiDataResponse struct {
+type DataResponse struct {
 	Success bool `json:"success"`
 	Data    any  `json:"data"`
 }
 
-type ApiListResponse struct {
-	Success bool  `json:"success"`
-	Data    []any `json:"data"`
-	Meta    ApiListMeta
+type ListResponse struct {
+	Success bool `json:"success"`
+	Data    any  `json:"data"`
+	Meta    ListMeta
 }
 
-type ApiErrorResponse struct {
-	Success bool           `json:"success"`
-	Error   ApiErrorDetail `json:"error"`
+type ErrorResponse struct {
+	Success bool        `json:"success"`
+	Error   ErrorDetail `json:"error"`
 }
 
-type ApiEmptyResponse struct {
+type EmptyResponse struct {
 	Success bool `json:"success"`
 }

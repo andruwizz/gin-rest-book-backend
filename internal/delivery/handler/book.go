@@ -24,23 +24,23 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 // @Accept json
 // @Produce json
 // @Param Body body request.BookCreate true "Request body"
-// @Success 201 {object} response.ApiDataResponse{data=entity.Book}
-// @Failure 400 {object} response.ApiErrorResponse
+// @Success 201 {object} response.DataResponse{data=entity.Book}
+// @Failure 400 {object} response.ErrorResponse
 // @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
 	req := new(request.BookCreate)
 	if err := ctx.ShouldBind(&req); err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
 	res, err := b.usecase.Create(req)
 	if err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	response.Success(ctx, http.StatusCreated, res, nil)
+	response.BookResource(ctx, http.StatusCreated, res)
 }
 
 // ListBook godoc
@@ -51,23 +51,23 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 // @Produce json
 // @Param limit query int false "Item count per page"
 // @Param page query int false "List page number"
-// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
-// @Failure 400 {object} response.ApiErrorResponse
+// @Success 200 {object} response.ListResponse{data=[]entity.Book}
+// @Failure 400 {object} response.ErrorResponse
 // @Router /books [GET]
 func (b *BookHandler) List(ctx *gin.Context) {
 	req := new(request.BookList)
 	if err := ctx.ShouldBindQuery(&req); err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
-	res, meta, err := b.usecase.List(req)
+	res, pagination, err := b.usecase.List(req)
 	if err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, res, *meta)
+	response.BookCollection(ctx, http.StatusOK, res, pagination)
 }
 
 // FindBook godoc
@@ -77,23 +77,23 @@ func (b *BookHandler) List(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
-// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
-// @Failure 400 {object} response.ApiErrorResponse
+// @Success 200 {object} response.DataResponse{data=entity.Book}
+// @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [GET]
 func (b *BookHandler) Find(ctx *gin.Context) {
 	req := new(request.BookGet)
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
 	res, err := b.usecase.Get(req)
 	if err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, res, nil)
+	response.BookResource(ctx, http.StatusOK, res)
 }
 
 // UpdateBook godoc
@@ -104,25 +104,25 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 // @Produce json
 // @Param id path string true "Book Id"
 // @Param Body body request.BookUpdate true "Request body"
-// @Success 200 {object} response.ApiDataResponse{data=entity.Book}
-// @Failure 400 {object} response.ApiErrorResponse
+// @Success 200 {object} response.DataResponse{data=entity.Book}
+// @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [PUT]
 func (b *BookHandler) Update(ctx *gin.Context) {
 	req := new(request.BookUpdate)
 	req.Id = ctx.Param("id")
 
 	if err := ctx.ShouldBind(&req); err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
 	res, err := b.usecase.Update(req)
 	if err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, res, nil)
+	response.BookResource(ctx, http.StatusOK, res)
 }
 
 // DeleteBook godoc
@@ -132,21 +132,21 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
-// @Success 200 {object} response.ApiEmptyResponse
-// @Failure 400 {object} response.ApiErrorResponse
+// @Success 200 {object} response.EmptyResponse
+// @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [DELETE]
 func (b *BookHandler) Delete(ctx *gin.Context) {
 	req := new(request.BookDelete)
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "INVALID_DATA", err.Error())
 		return
 	}
 
 	err := b.usecase.Delete(req)
 	if err != nil {
-		response.Fail(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
+		response.ErrorResource(ctx, http.StatusBadRequest, "BAD_REQUEST", err.Error())
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, nil, nil)
+	response.EmptyResource(ctx, http.StatusOK)
 }
