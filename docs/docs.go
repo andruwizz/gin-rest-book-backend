@@ -342,10 +342,15 @@ const docTemplate = `{
         "response.ErrorDetail": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "string"
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
-                "message": {}
+                "message": {
+                    "type": "string"
+                }
             }
         },
         "response.ErrorResponse": {

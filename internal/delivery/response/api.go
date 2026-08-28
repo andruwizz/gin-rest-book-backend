@@ -9,8 +9,8 @@ import (
 )
 
 type ErrorDetail struct {
-	Code    string `json:"code"`
-	Message any    `json:"message"`
+	Message string            `json:"message"`
+	Errors  map[string]string `json:"errors,omitempty"`
 }
 
 type ListMeta struct {
@@ -53,23 +53,23 @@ func EmptyResource(ctx *gin.Context, code int) {
 	ctx.JSON(code, res)
 }
 
-func ErrorValidation(ctx *gin.Context, code int, errorCode string, err error) {
+func ErrorValidation(ctx *gin.Context, code int, err error) {
+	msg, errs := ExtractValidationError(err.(validator.ValidationErrors))
 	res := ErrorResponse{
 		Success: false,
 		Error: ErrorDetail{
-			Code:    errorCode,
-			Message: ExtractValidationError(err.(validator.ValidationErrors)),
+			Message: msg,
+			Errors:  errs,
 		},
 	}
 
 	ctx.JSON(code, res)
 }
 
-func ErrorResource(ctx *gin.Context, code int, errorCode string, err error) {
+func ErrorResource(ctx *gin.Context, code int, err error) {
 	res := ErrorResponse{
 		Success: false,
 		Error: ErrorDetail{
-			Code:    errorCode,
 			Message: err.Error(),
 		},
 	}
@@ -77,16 +77,17 @@ func ErrorResource(ctx *gin.Context, code int, errorCode string, err error) {
 	ctx.JSON(code, res)
 }
 
-func ExtractValidationError(ve validator.ValidationErrors) []ValidationError {
-	errs := []ValidationError{}
-
+func ExtractValidationError(ve validator.ValidationErrors) (string, map[string]string) {
+	errs := map[string]string{}
 	for _, f := range ve {
-		err := f.Tag()
-		if f.Param() != "" {
-			err = fmt.Sprintf("%s=%s", err, f.Param())
-		}
-		errs = append(errs, ValidationError{Field: strings.ToLower(f.Field()), Rule: err})
+		err := strings.Split(f.Error(), "Error:")
+		errs[strings.ToLower(f.Field())] = fmt.Sprintf("%s.", err[1])
 	}
 
-	return errs
+	message := fmt.Sprintf("%s.", strings.Split(ve[0].Error(), "Error:")[1])
+	if errCount := len(ve); errCount > 1 {
+		message = fmt.Sprintf("%s (and %d more)", message, errCount-1)
+	}
+
+	return message, errs
 }

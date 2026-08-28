@@ -48,9 +48,12 @@ definitions:
     type: object
   response.ErrorDetail:
     properties:
-      code:
+      errors:
+        additionalProperties:
+          type: string
+        type: object
+      message:
         type: string
-      message: {}
     type: object
   response.ErrorResponse:
     properties:
