@@ -12,7 +12,7 @@ import (
 
 type UserUsecase interface {
 	Create(req *request.UserCreate) (*entity.User, error)
-	Login(req *request.UserLogin) (*entity.UserAuth, error)
+	Login(req *request.UserLogin) (*entity.AuthToken, error)
 }
 
 type userUsecase struct {
@@ -43,7 +43,7 @@ func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
 	return payload, nil
 }
 
-func (c *userUsecase) Login(req *request.UserLogin) (*entity.UserAuth, error) {
+func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 
 	user := new(entity.User)
 	err := c.repository.Find(req.Email, user)
@@ -70,7 +70,7 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.UserAuth, error) {
 		return nil, err
 	}
 
-	res := &entity.UserAuth{
+	res := &entity.AuthToken{
 		Token: signedToken,
 	}
 

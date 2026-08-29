@@ -2,7 +2,7 @@ package entity
 
 import "github.com/golang-jwt/jwt/v5"
 
-type UserAuth struct {
+type AuthToken struct {
 	Token string `json:"token"`
 }
 
