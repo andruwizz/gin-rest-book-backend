@@ -9,5 +9,5 @@ type AuthToken struct {
 type AuthClaim struct {
 	jwt.RegisteredClaims
 	Name  string `json:"name"`
-	Email string `json:"Email"`
+	Email string `json:"email"`
 }

@@ -58,7 +58,7 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 	claims := entity.AuthClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "APP_NAME",
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
 		},
 		Name:  user.Name,
 		Email: user.Email,
