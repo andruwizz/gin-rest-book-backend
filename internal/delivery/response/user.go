@@ -14,7 +14,7 @@ func UserResource(ctx *gin.Context, code int, e *entity.User) {
 	ctx.JSON(code, res)
 }
 
-func UserAuthResource(ctx *gin.Context, code int, e *entity.UserAuth) {
+func UserAuthResource(ctx *gin.Context, code int, e *entity.AuthToken) {
 	res := DataResponse{
 		Success: true,
 		Data:    e,
