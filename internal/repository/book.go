@@ -10,11 +10,11 @@ import (
 )
 
 type BookRepository interface {
-	Create(data *entity.Book) (*entity.Book, error)
+	Create(data *entity.Book) error
 	List(limit int, page int) ([]entity.Book, *entity.Pagination, error)
-	Find(id string) (*entity.Book, error)
-	Update(id string, data *entity.Book) (*entity.Book, error)
-	Delete(id string) error
+	Find(id string, data *entity.Book) error
+	Update(data *entity.Book) error
+	Delete(data *entity.Book) error
 }
 
 type bookRepository struct {
@@ -25,13 +25,8 @@ func NewBookRepository(db *gorm.DB) BookRepository {
 	return &bookRepository{db}
 }
 
-func (b *bookRepository) Create(data *entity.Book) (*entity.Book, error) {
-	err := b.db.Create(&data).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return data, nil
+func (b *bookRepository) Create(data *entity.Book) error {
+	return b.db.Create(&data).Error
 }
 
 func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagination, error) {
@@ -64,60 +59,14 @@ func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagin
 	return books, &pagination, nil
 }
 
-func (b *bookRepository) Find(id string) (*entity.Book, error) {
-	var book entity.Book
-
-	err := b.db.
-		Model(&entity.Book{}).
-		Where("id = ?", id).
-		First(&book).
-		Error
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &book, nil
+func (b *bookRepository) Find(id string, data *entity.Book) error {
+	return b.db.Where("id = ?", id).Take(data).Error
 }
 
-func (b *bookRepository) Update(id string, data *entity.Book) (*entity.Book, error) {
-	var book entity.Book
-
-	curr, err := b.Find(id)
-	if err != nil {
-		return nil, err
-	}
-
-	err = b.db.
-		Model(&book).
-		Where("id = ?", id).
-		Clauses(clause.Returning{}).
-		Updates(&data).
-		Error
-
-	if err != nil {
-		return nil, err
-	}
-	book.Id = curr.Id
-	book.CreatedAt = curr.CreatedAt
-
-	return &book, nil
+func (b *bookRepository) Update(data *entity.Book) error {
+	return b.db.Save(data).Error
 }
 
-func (b *bookRepository) Delete(id string) error {
-	_, err := b.Find(id)
-	if err != nil {
-		return err
-	}
-
-	err = b.db.
-		Where("id = ?", id).
-		Delete(&entity.Book{}).
-		Error
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (b *bookRepository) Delete(data *entity.Book) error {
+	return b.db.Delete(data).Error
 }

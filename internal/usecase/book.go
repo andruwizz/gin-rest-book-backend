@@ -23,17 +23,17 @@ func NewBookUsecase(repository repository.BookRepository) BookUsecase {
 }
 
 func (c *bookUsecase) Create(req *request.BookCreate) (*entity.Book, error) {
-	payload := &entity.Book{
+	book := &entity.Book{
 		Title:  req.Title,
 		Author: req.Author,
 	}
 
-	res, err := c.repository.Create(payload)
+	err := c.repository.Create(book)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	return book, nil
 }
 
 func (c *bookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pagination, error) {
@@ -46,30 +46,41 @@ func (c *bookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pagina
 }
 
 func (c *bookUsecase) Get(req *request.BookGet) (*entity.Book, error) {
-	res, err := c.repository.Find(req.Id)
+	book := new(entity.Book)
+	err := c.repository.Find(req.Id, book)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	return book, nil
 }
 
 func (c *bookUsecase) Update(req *request.BookUpdate) (*entity.Book, error) {
-	payload := &entity.Book{
-		Title:  req.Title,
-		Author: req.Author,
+	book := new(entity.Book)
+	err := c.repository.Find(req.Id, book)
+	if err != nil {
+		return book, err
 	}
 
-	res, err := c.repository.Update(req.Id, payload)
+	book.Title = req.Title
+	book.Author = req.Author
+
+	err = c.repository.Update(book)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	return book, nil
 }
 
 func (c *bookUsecase) Delete(req *request.BookDelete) error {
-	err := c.repository.Delete(req.Id)
+	book := new(entity.Book)
+	err := c.repository.Find(req.Id, book)
+	if err != nil {
+		return err
+	}
+
+	err = c.repository.Delete(book)
 	if err != nil {
 		return err
 	}
