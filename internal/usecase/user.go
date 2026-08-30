@@ -52,7 +52,7 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 		return nil, err
 	}
 
-	res, err := helper.CreateAuthToken(user)
+	res, err := helper.EncodeAuthToken(user)
 	if err != nil {
 		return nil, err
 	}

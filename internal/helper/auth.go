@@ -25,7 +25,7 @@ func VerifyAuthPassword(plain string, encrypted string) error {
 	return nil
 }
 
-func CreateAuthToken(user *entity.User) (*entity.AuthToken, error) {
+func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	claims := entity.AuthClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "APP_NAME",
