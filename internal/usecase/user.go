@@ -1,13 +1,10 @@
 package usecase
 
 import (
-	"time"
-
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserUsecase interface {
@@ -24,7 +21,7 @@ func NewUserUsecase(repository repository.UserRepository) UserUsecase {
 }
 
 func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
-	password, err := bcrypt.GenerateFromPassword([]byte(req.Password), 10)
+	password, err := helper.EncryptAuthPassword(req.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +29,7 @@ func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
 	payload := &entity.User{
 		Name:     req.Name,
 		Email:    req.Email,
-		Password: string(password),
+		Password: password,
 	}
 
 	err = c.repository.Create(payload)
@@ -51,27 +48,13 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 		return nil, err
 	}
 
-	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+	if err := helper.VerifyAuthPassword(user.Password, req.Password); err != nil {
 		return nil, err
 	}
 
-	claims := entity.AuthClaim{
-		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "APP_NAME",
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
-		},
-		Name:  user.Name,
-		Email: user.Email,
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte("SIGNATURE_KEY"))
+	res, err := helper.CreateAuthToken(user)
 	if err != nil {
 		return nil, err
-	}
-
-	res := &entity.AuthToken{
-		Token: signedToken,
 	}
 
 	return res, nil
