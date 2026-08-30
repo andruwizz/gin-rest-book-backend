@@ -10,6 +10,7 @@ import (
 type UserUsecase interface {
 	Create(req *request.UserCreate) (*entity.User, error)
 	Login(req *request.UserLogin) (*entity.AuthToken, error)
+	Get(req *request.UserGet) (*entity.User, error)
 }
 
 type userUsecase struct {
@@ -41,7 +42,6 @@ func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
 }
 
 func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
-
 	user := new(entity.User)
 	err := c.repository.Find(req.Email, user)
 	if err != nil {
@@ -55,6 +55,24 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 	res, err := helper.EncodeAuthToken(user)
 	if err != nil {
 		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *userUsecase) Get(req *request.UserGet) (*entity.User, error) {
+	user := new(entity.User)
+	err := c.repository.Find(req.Email, user)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &entity.User{
+		Id:        user.Id,
+		Name:      user.Name,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}
 
 	return res, nil
