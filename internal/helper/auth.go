@@ -1,6 +1,8 @@
 package helper
 
 import (
+	"errors"
+	"strings"
 	"time"
 
 	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
@@ -46,4 +48,21 @@ func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	}
 
 	return resToken, nil
+}
+
+func DecodeAuthToken(header string) (*jwt.Token, error) {
+	if !strings.Contains(header, "Bearer ") {
+		return nil, errors.New("authentication token not found")
+	}
+
+	tokenString := strings.TrimPrefix(header, "Bearer ")
+	token, err := jwt.ParseWithClaims(tokenString, &entity.AuthClaim{}, func(t *jwt.Token) (any, error) {
+		return []byte("SIGNATURE_KEY"), nil
+	})
+
+	if err != nil || !token.Valid {
+		return nil, err
+	}
+
+	return token, err
 }
