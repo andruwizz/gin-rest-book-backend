@@ -50,7 +50,7 @@ func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	return resToken, nil
 }
 
-func DecodeAuthToken(header string) (*jwt.Token, error) {
+func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 	if !strings.Contains(header, "Bearer ") {
 		return nil, errors.New("authentication token not found")
 	}
@@ -64,5 +64,9 @@ func DecodeAuthToken(header string) (*jwt.Token, error) {
 		return nil, err
 	}
 
-	return token, err
+	if claims, ok := token.Claims.(*entity.AuthClaim); ok {
+		return claims, nil
+	}
+
+	return nil, errors.New("failed decoding token")
 }
