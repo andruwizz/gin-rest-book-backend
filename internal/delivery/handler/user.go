@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
+	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -82,14 +82,11 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 // @Router /users/current [GET]
 func (u *UserHandler) Current(ctx *gin.Context) {
 	req := new(request.UserGet)
-	userInfo, ok := ctx.Get("userInfo")
-	if !ok {
-		response.ErrorResource(ctx, http.StatusUnauthorized, errors.New("Unauthenticated"))
+	err := helper.GetAuthUser(ctx, req)
+	if err != nil {
+		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
 	}
-
-	userInfoMap := userInfo.(map[string]string)
-	req.Email = userInfoMap["email"]
 
 	res, err := u.usecase.Get(req)
 	if err != nil {

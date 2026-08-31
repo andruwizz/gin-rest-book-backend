@@ -12,5 +12,6 @@ type UserLogin struct {
 }
 
 type UserGet struct {
+	Name  string `form:"name" binding:"required,alphanumspace"`
 	Email string `form:"email" binding:"required,email"`
 }

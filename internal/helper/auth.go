@@ -5,7 +5,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -69,4 +71,17 @@ func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 	}
 
 	return nil, errors.New("failed decoding token")
+}
+
+func GetAuthUser(ctx *gin.Context, user *request.UserGet) error {
+	userInfo, ok := ctx.Get("userInfo")
+	if !ok {
+		return errors.New("Unauthenticated")
+	}
+
+	userInfoMap := userInfo.(map[string]string)
+	user.Name = userInfoMap["user"]
+	user.Email = userInfoMap["email"]
+
+	return nil
 }
