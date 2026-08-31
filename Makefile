@@ -6,8 +6,13 @@ else
 	PACKAGE = $(shell head -1 go.mod | awk '{print $$2}')
 endif
 
+ifneq (,$(wildcard ./.env))
+	include .env
+	export
+endif
+
 run:
-	go run cmd/main.go
+	godotenv -f .env go run cmd/main.go
 
 api-docs:
 	swag init -g internal/config/swaggo.go
@@ -17,7 +22,7 @@ migration $$(enter):
 	migrate create -ext sql -dir database/migrations $$migration_name
 
 migration-up:
-	migrate -database "mysql://user:password@tcp(127.0.0.1:3306)/app" -path database/migrations up
+	migrate -database $(DATABASE_MIGRATION_DSN) -path database/migrations up
 
 migration-down:
-	migrate -database "mysql://user:password@tcp(127.0.0.1:3306)/app" -path database/migrations down
+	migrate -database $(DATABASE_MIGRATION_DSN) -path database/migrations down

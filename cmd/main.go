@@ -8,9 +8,6 @@ import (
 )
 
 func main() {
-	// Load Config
-	config.LoadConfig()
-
 	// Init Database
 	db := config.NewDatabase()
 
