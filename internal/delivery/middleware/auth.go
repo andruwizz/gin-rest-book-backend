@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
@@ -19,7 +20,7 @@ func Authenticated() gin.HandlerFunc {
 		}
 
 		userInfo := map[string]string{"name": claims.Name, "email": claims.Email}
-		ctx.Set("userInfo", userInfo)
+		ctx.Set(os.Getenv("AUTH_CONTEXT_KEY"), userInfo)
 		ctx.Next()
 	}
 }

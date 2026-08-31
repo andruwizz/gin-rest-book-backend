@@ -2,6 +2,8 @@ package helper
 
 import (
 	"errors"
+	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,17 +32,18 @@ func VerifyAuthPassword(plain string, encrypted string) error {
 }
 
 func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
+	duration, _ := strconv.Atoi(os.Getenv("AUTH_TOKEN_DURATION"))
 	claims := entity.AuthClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "APP_NAME",
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(duration) * time.Hour)),
 		},
 		Name:  user.Name,
 		Email: user.Email,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte("SIGNATURE_KEY"))
+	signedToken, err := token.SignedString([]byte(os.Getenv("AUTH_SIGNATURE_KEY")))
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +62,7 @@ func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 
 	tokenString := strings.TrimPrefix(header, "Bearer ")
 	token, err := jwt.ParseWithClaims(tokenString, &entity.AuthClaim{}, func(t *jwt.Token) (any, error) {
-		return []byte("SIGNATURE_KEY"), nil
+		return []byte(os.Getenv("AUTH_SIGNATURE_KEY")), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -74,7 +77,7 @@ func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 }
 
 func GetAuthUser(ctx *gin.Context, user *request.UserGet) error {
-	userInfo, ok := ctx.Get("userInfo")
+	userInfo, ok := ctx.Get(os.Getenv("AUTH_CONTEXT_KEY"))
 	if !ok {
 		return errors.New("Unauthenticated")
 	}

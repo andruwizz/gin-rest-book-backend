@@ -1,8 +1,16 @@
 package main
 
-import "github.com/andruwizz/gin-book-sharing-backend/internal/config"
+import (
+	"fmt"
+	"os"
+
+	"github.com/andruwizz/gin-book-sharing-backend/internal/config"
+)
 
 func main() {
+	// Load Config
+	config.LoadConfig()
+
 	// Init Database
 	db := config.NewDatabase()
 
@@ -14,5 +22,6 @@ func main() {
 		App: app,
 	})
 
-	app.Run(":3000")
+	appAddress := fmt.Sprintf("%s:%s", os.Getenv("APP_HOST"), os.Getenv("APP_PORT"))
+	app.Run(appAddress)
 }
