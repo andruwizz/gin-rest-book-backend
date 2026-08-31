@@ -10,7 +10,7 @@ run:
 	go run cmd/main.go
 
 api-docs:
-	swag init -g ./cmd/main.go
+	swag init -g internal/config/swaggo.go
 
 migration $$(enter):
 	@read -p "Migration name:" migration_name; \

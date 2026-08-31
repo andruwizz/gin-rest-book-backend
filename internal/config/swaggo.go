@@ -7,6 +7,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name Authorization
 func NewSwaggo(app *gin.Engine) {
 
 	// Set Swagger Info
@@ -18,5 +21,5 @@ func NewSwaggo(app *gin.Engine) {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	// Set Swagger Path
-	app.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	app.GET("/api/v1/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

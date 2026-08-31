@@ -1,4 +1,9 @@
 definitions:
+  entity.AuthToken:
+    properties:
+      token:
+        type: string
+    type: object
   entity.Book:
     properties:
       author:
@@ -8,6 +13,19 @@ definitions:
       id:
         type: string
       title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
         type: string
       updated_at:
         type: string
@@ -34,6 +52,29 @@ definitions:
     - author
     - id
     - title
+    type: object
+  request.UserCreate:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  request.UserLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
     type: object
   response.DataResponse:
     properties:
@@ -116,6 +157,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: List all book
       tags:
       - Book
@@ -146,6 +189,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Create a new book
       tags:
       - Book
@@ -171,6 +216,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a book
       tags:
       - Book
@@ -200,6 +247,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Find a book
       tags:
       - Book
@@ -235,7 +284,102 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a book
       tags:
       - Book
+  /users/current:
+    get:
+      consumes:
+      - application/json
+      description: Show current authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.DataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get current user
+      tags:
+      - User
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login as registered user
+      parameters:
+      - description: Request body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.DataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.AuthToken'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Login as user
+      tags:
+      - User
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: Request body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.DataResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
