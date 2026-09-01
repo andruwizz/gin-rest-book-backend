@@ -41,7 +41,7 @@ func (u *UserHandler) Register(ctx *gin.Context) {
 		return
 	}
 
-	response.UserResource(ctx, http.StatusCreated, res)
+	response.Resource(ctx, http.StatusCreated, res)
 }
 
 // Login godoc
@@ -67,7 +67,7 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	response.UserAuthResource(ctx, http.StatusOK, res)
+	response.Resource(ctx, http.StatusOK, res)
 }
 
 // Current godoc
@@ -94,5 +94,5 @@ func (u *UserHandler) Current(ctx *gin.Context) {
 		return
 	}
 
-	response.UserResource(ctx, http.StatusOK, res)
+	response.Resource(ctx, http.StatusOK, res)
 }

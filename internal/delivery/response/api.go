@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
-type ErrorDetail struct {
+type errorDetail struct {
 	Message string            `json:"message"`
 	Errors  map[string]string `json:"errors,omitempty"`
 }
 
-type ListMeta struct {
+type listMeta struct {
 	Page       int `json:"page"`
 	PerPage    int `json:"per_page"`
 	Total      int `json:"total"`
@@ -28,21 +29,16 @@ type DataResponse struct {
 type ListResponse struct {
 	Success bool     `json:"success"`
 	Data    any      `json:"data"`
-	Meta    ListMeta `json:"meta"`
+	Meta    listMeta `json:"meta"`
 }
 
 type ErrorResponse struct {
 	Success bool        `json:"success"`
-	Error   ErrorDetail `json:"error"`
+	Error   errorDetail `json:"error"`
 }
 
 type EmptyResponse struct {
 	Success bool `json:"success"`
-}
-
-type ValidationError struct {
-	Field string `json:"field"`
-	Rule  string `json:"rule"`
 }
 
 func EmptyResource(ctx *gin.Context, code int) {
@@ -54,10 +50,10 @@ func EmptyResource(ctx *gin.Context, code int) {
 }
 
 func ErrorValidation(ctx *gin.Context, code int, err error) {
-	msg, errs := ExtractValidationError(err.(validator.ValidationErrors))
+	msg, errs := extractValidationError(err.(validator.ValidationErrors))
 	res := ErrorResponse{
 		Success: false,
-		Error: ErrorDetail{
+		Error: errorDetail{
 			Message: msg,
 			Errors:  errs,
 		},
@@ -69,7 +65,7 @@ func ErrorValidation(ctx *gin.Context, code int, err error) {
 func ErrorResource(ctx *gin.Context, code int, err error) {
 	res := ErrorResponse{
 		Success: false,
-		Error: ErrorDetail{
+		Error: errorDetail{
 			Message: err.Error(),
 		},
 	}
@@ -77,7 +73,7 @@ func ErrorResource(ctx *gin.Context, code int, err error) {
 	ctx.JSON(code, res)
 }
 
-func ExtractValidationError(ve validator.ValidationErrors) (string, map[string]string) {
+func extractValidationError(ve validator.ValidationErrors) (string, map[string]string) {
 	errs := map[string]string{}
 	for _, f := range ve {
 		err := strings.Split(f.Error(), "Error:")
@@ -90,4 +86,34 @@ func ExtractValidationError(ve validator.ValidationErrors) (string, map[string]s
 	}
 
 	return message, errs
+}
+
+func Resource[T Entity](ctx *gin.Context, code int, e *T) {
+	res := DataResponse{
+		Success: true,
+		Data:    e,
+	}
+
+	ctx.JSON(code, res)
+}
+
+func Collection[T Entity](ctx *gin.Context, code int, e []T, p *entity.Pagination) {
+	col := ListResponse{
+		Success: true,
+		Data:    e,
+		Meta: listMeta{
+			Page:       p.Page,
+			PerPage:    p.Limit,
+			Total:      int(p.TotalRecords),
+			TotalPages: p.TotalPage,
+		},
+	}
+
+	ctx.JSON(code, col)
+}
+
+type Entity interface {
+	entity.Book |
+		entity.User |
+		entity.AuthToken
 }

@@ -576,7 +576,30 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ErrorDetail": {
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.errorDetail"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "response.ListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "meta": {
+                    "$ref": "#/definitions/response.listMeta"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "response.errorDetail": {
             "type": "object",
             "properties": {
                 "errors": {
@@ -590,18 +613,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "$ref": "#/definitions/response.ErrorDetail"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "response.ListMeta": {
+        "response.listMeta": {
             "type": "object",
             "properties": {
                 "page": {
@@ -615,18 +627,6 @@ const docTemplate = `{
                 },
                 "total_pages": {
                     "type": "integer"
-                }
-            }
-        },
-        "response.ListResponse": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "meta": {
-                    "$ref": "#/definitions/response.ListMeta"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             }
         }

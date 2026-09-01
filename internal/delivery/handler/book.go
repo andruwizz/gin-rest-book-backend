@@ -41,7 +41,7 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	response.BookResource(ctx, http.StatusCreated, res)
+	response.Resource(ctx, http.StatusCreated, res)
 }
 
 // ListBook godoc
@@ -69,7 +69,7 @@ func (b *BookHandler) List(ctx *gin.Context) {
 		return
 	}
 
-	response.BookCollection(ctx, http.StatusOK, res, pagination)
+	response.Collection(ctx, http.StatusOK, res, pagination)
 }
 
 // FindBook godoc
@@ -96,7 +96,7 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 		return
 	}
 
-	response.BookResource(ctx, http.StatusOK, res)
+	response.Resource(ctx, http.StatusOK, res)
 }
 
 // UpdateBook godoc
@@ -126,7 +126,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	response.BookResource(ctx, http.StatusOK, res)
+	response.Resource(ctx, http.StatusOK, res)
 }
 
 // DeleteBook godoc

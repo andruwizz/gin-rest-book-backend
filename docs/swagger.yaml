@@ -87,7 +87,22 @@ definitions:
       success:
         type: boolean
     type: object
-  response.ErrorDetail:
+  response.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.errorDetail'
+      success:
+        type: boolean
+    type: object
+  response.ListResponse:
+    properties:
+      data: {}
+      meta:
+        $ref: '#/definitions/response.listMeta'
+      success:
+        type: boolean
+    type: object
+  response.errorDetail:
     properties:
       errors:
         additionalProperties:
@@ -96,14 +111,7 @@ definitions:
       message:
         type: string
     type: object
-  response.ErrorResponse:
-    properties:
-      error:
-        $ref: '#/definitions/response.ErrorDetail'
-      success:
-        type: boolean
-    type: object
-  response.ListMeta:
+  response.listMeta:
     properties:
       page:
         type: integer
@@ -113,14 +121,6 @@ definitions:
         type: integer
       total_pages:
         type: integer
-    type: object
-  response.ListResponse:
-    properties:
-      data: {}
-      meta:
-        $ref: '#/definitions/response.ListMeta'
-      success:
-        type: boolean
     type: object
 info:
   contact: {}
