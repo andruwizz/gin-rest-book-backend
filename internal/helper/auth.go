@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"

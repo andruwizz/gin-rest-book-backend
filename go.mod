@@ -1,4 +1,4 @@
-module github.com/andruwizz/gin-book-sharing-backend
+module github.com/andruwizz/gin-rest-book-backend
 
 go 1.26.4
 

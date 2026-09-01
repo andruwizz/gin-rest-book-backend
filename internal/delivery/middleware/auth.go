@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 

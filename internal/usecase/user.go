@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
+	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 )
 
 type UserUsecase interface {

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/config"
+	"github.com/andruwizz/gin-rest-book-backend/internal/config"
 )
 
 func main() {

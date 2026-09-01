@@ -3,10 +3,10 @@ package handler
 import (
 	"net/http"
 
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/response"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/helper"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/usecase"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
+	"github.com/andruwizz/gin-rest-book-backend/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/andruwizz/gin-book-sharing-backend/docs"
+	"github.com/andruwizz/gin-rest-book-backend/docs"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

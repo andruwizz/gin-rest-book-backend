@@ -1,7 +1,7 @@
 package response
 
 import (
-	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/gin-gonic/gin"
 )
 

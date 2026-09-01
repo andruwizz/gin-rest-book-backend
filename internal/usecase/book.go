@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/request"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/entity"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/repository"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 )
 
 type BookUsecase interface {

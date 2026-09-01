@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/handler"
-	"github.com/andruwizz/gin-book-sharing-backend/internal/delivery/middleware"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/handler"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/middleware"
 	"github.com/gin-gonic/gin"
 )
 
