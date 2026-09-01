@@ -153,5 +153,5 @@ func (b *BookHandler) Delete(ctx *gin.Context) {
 		return
 	}
 
-	response.EmptyResource(ctx, http.StatusOK)
+	response.Empty(ctx, http.StatusOK)
 }
