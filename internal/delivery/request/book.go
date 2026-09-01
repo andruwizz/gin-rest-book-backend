@@ -15,7 +15,7 @@ type BookGet struct {
 }
 
 type BookUpdate struct {
-	Id     string `uri:"id" binding:"required,uuid"`
+	Id     string `uri:"id" binding:"required,uuid" json:"-"`
 	Title  string `form:"title" binding:"required,alphanumspace"`
 	Author string `form:"author" binding:"required,alphanumspace"`
 }

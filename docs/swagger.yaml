@@ -44,13 +44,10 @@ definitions:
     properties:
       author:
         type: string
-      id:
-        type: string
       title:
         type: string
     required:
     - author
-    - id
     - title
     type: object
   request.UserCreate:

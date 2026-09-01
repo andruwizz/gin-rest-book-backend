@@ -510,14 +510,10 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "author",
-                "id",
                 "title"
             ],
             "properties": {
                 "author": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "title": {
