@@ -12,3 +12,24 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-p${DATABASE_PASSWORD}"]
       retries: 3
       timeout: 5s
+
+  # rest:
+  #   build: .
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #   environment:
+  #     APP_NAME: ${APP_NAME}
+  #     APP_HOST: ${APP_HOST}
+  #     APP_PORT: ${APP_PORT}
+  #     AUTH_TOKEN_DURATION: ${AUTH_TOKEN_DURATION}
+  #     AUTH_SIGNATURE_KEY: ${AUTH_SIGNATURE_KEY}
+  #     AUTH_CONTEXT_KEY: ${AUTH_CONTEXT_KEY}
+  #     DATABASE_HOST: ${DATABASE_HOST}
+  #     DATABASE_PORT: ${DATABASE_PORT}
+  #     DATABASE_USER: ${DATABASE_USER}
+  #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  #     DATABASE_NAME: ${DATABASE_NAME}
+  #     DATABASE_MIGRATION_DSN: ${DATABASE_MIGRATION_DSN}
+  #   ports:
+  #     - "${APP_PORT}:3000"

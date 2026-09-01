@@ -19,6 +19,6 @@ func main() {
 		App: app,
 	})
 
-	appAddress := fmt.Sprintf("%s:%s", os.Getenv("APP_HOST"), os.Getenv("APP_PORT"))
+	appAddress := fmt.Sprintf(":%s", os.Getenv("APP_PORT"))
 	app.Run(appAddress)
 }
