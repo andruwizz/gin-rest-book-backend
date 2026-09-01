@@ -1,3 +1,3 @@
-# Book Sharing Backend
+# Book Rest Backend
 
-Book Sharing Management Platform
+Book REST APIs

@@ -16,9 +16,9 @@ import (
 func NewSwaggo(app *gin.Engine) {
 
 	// Set Swagger Info
-	docs.SwaggerInfo.Title = "Book Sharing API"
+	docs.SwaggerInfo.Title = "Book REST API"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Description = "This is a Book Sharing API"
+	docs.SwaggerInfo.Description = "This is a Book REST API"
 	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", os.Getenv("APP_HOST"), os.Getenv("APP_PORT"))
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
