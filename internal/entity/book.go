@@ -11,8 +11,8 @@ type Book struct {
 	Id        string `gorm:"type:uuid;primaryKey" json:"id"`
 	Title     string `gorm:"type:varchar" json:"title"`
 	Author    string `gorm:"type:varchar" json:"author"`
-	CreatedAt string `gorm:"type:bigint" json:"created_at"`
-	UpdatedAt string `gorm:"type:bigint" json:"updated_at"`
+	CreatedAt int64  `gorm:"type:bigint" json:"created_at"`
+	UpdatedAt int64  `gorm:"type:bigint" json:"updated_at"`
 }
 
 func (b *Book) BeforeCreate(tx *gorm.DB) error {
