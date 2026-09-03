@@ -3,8 +3,10 @@ package mock
 import (
 	"errors"
 	"math"
+	"time"
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/google/uuid"
 )
 
 type BookRepository interface {
@@ -35,6 +37,29 @@ func (b *mockBookRepository) List(limit int, page int) ([]entity.Book, *entity.P
 	var books []entity.Book
 	var pagination entity.Pagination
 	var totalRecords int64
+
+	time := time.Now().UnixMilli()
+	books = []entity.Book{
+		{
+			Id:        uuid.NewString(),
+			Title:     "Book One",
+			Author:    "Book AUthor",
+			CreatedAt: time,
+			UpdatedAt: time,
+		}, {
+			Id:        uuid.NewString(),
+			Title:     "Book Two",
+			Author:    "Book AUthor",
+			CreatedAt: time,
+			UpdatedAt: time,
+		}, {
+			Id:        uuid.NewString(),
+			Title:     "Book Three",
+			Author:    "Book AUthor",
+			CreatedAt: time,
+			UpdatedAt: time,
+		},
+	}
 
 	pagination.Limit = limit
 	pagination.Page = page
