@@ -1,13 +1,10 @@
 package mock
 
 import (
-	"time"
-
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository/mock"
-	"github.com/google/uuid"
 )
 
 type BookUsecase interface {
@@ -27,13 +24,12 @@ func NewMockBookUsecase(repository repository.BookRepository) BookUsecase {
 }
 
 func (c *mockBookUsecase) Create(req *request.BookCreate) (*entity.Book, error) {
-	time := time.Now().UnixMilli()
 	book := &entity.Book{
-		Id:        uuid.NewString(),
+		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     req.Title,
 		Author:    req.Author,
-		CreatedAt: time,
-		UpdatedAt: time,
+		CreatedAt: 1788410288537,
+		UpdatedAt: 1788410288537,
 	}
 
 	return book, nil
@@ -86,13 +82,12 @@ func (c *mockBookUsecase) Get(req *request.BookGet) (*entity.Book, error) {
 }
 
 func (c *mockBookUsecase) Update(req *request.BookUpdate) (*entity.Book, error) {
-	timeNow := time.Now().UnixMilli()
 	book := &entity.Book{
 		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     req.Title,
 		Author:    req.Author,
 		CreatedAt: 1788410288537,
-		UpdatedAt: timeNow,
+		UpdatedAt: 1788410288537,
 	}
 
 	return book, nil

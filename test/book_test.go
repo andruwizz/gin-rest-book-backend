@@ -1,13 +1,18 @@
 package test
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/handler"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
+	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/routes"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	repoMock "github.com/andruwizz/gin-rest-book-backend/internal/repository/mock"
 	usecaseMock "github.com/andruwizz/gin-rest-book-backend/internal/usecase/mock"
 	"github.com/gin-gonic/gin"
@@ -27,22 +32,39 @@ func NewMockSetup() *handler.BookHandler {
 	return bookHandler
 }
 
-// func TestListBookUnauthorized(t *testing.T) {
-// 	// Arrange
-// 	app := gin.Default()
-// 	rg := app.Group("/api/v1")
-// 	routes.BookRouter(rg, NewMockSetup())
+func TestCreateBook(t *testing.T) {
+	// Arrange
+	app := gin.Default()
+	rg := app.Group("/api/v1")
+	routes.BookRouter(rg, NewMockSetup())
 
-// 	// Act
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest(http.MethodGet, "/api/v1/books/", nil)
-// 	app.ServeHTTP(w, req)
+	// Act
+	w := httptest.NewRecorder()
 
-// 	// Assert
-// 	res := `{"success":false,"error":{"message":"authentication token not found"}}`
-// 	assert.Equal(t, http.StatusUnauthorized, w.Code)
-// 	assert.Equal(t, res, w.Body.String())
-// }
+	payload := request.BookCreate{Title: "Laskar Pelari", Author: "Andria Henrietta"}
+	reqPayload, _ := json.Marshal(payload)
+
+	req, _ := http.NewRequest(http.MethodPost, "/api/v1/books/", bytes.NewBuffer(reqPayload))
+	req.Header.Set("Content-Type", "application/json")
+	app.ServeHTTP(w, req)
+
+	// Assert
+	var res response.DataResponse[entity.Book]
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusCreated, w.Code)
+	assert.Equal(t, response.DataResponse[entity.Book]{
+		Success: true,
+		Data: entity.Book{
+			Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
+			Title:     "Laskar Pelari",
+			Author:    "Andria Henrietta",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
+		},
+	}, res)
+}
 
 func TestListBook(t *testing.T) {
 	// Arrange
@@ -56,9 +78,43 @@ func TestListBook(t *testing.T) {
 	app.ServeHTTP(w, req)
 
 	// Assert
-	res := `{"success":true,"data":[{"id":"305c8059-28d7-49f7-a15c-acba512f2b0a","title":"Book One","author":"Book Author","created_at":1788410288537,"updated_at":1788410288537},{"id":"348c6370-801d-4fab-80a3-5b3ecbc88760","title":"Book Two","author":"Book Author","created_at":1788410288537,"updated_at":1788410288537},{"id":"5a5a9021-7b19-47f4-bda8-05d2551f8ed8","title":"Book Three","author":"Book Author","created_at":1788410288537,"updated_at":1788410288537}],"meta":{"page":1,"per_page":10,"total":100,"total_pages":10}}`
+	var res response.ListResponse[entity.Book]
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+
+	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, res, w.Body.String())
+	assert.Equal(t, response.ListResponse[entity.Book]{
+		Success: true,
+		Data: []entity.Book{
+			{
+				Id:        "305c8059-28d7-49f7-a15c-acba512f2b0a",
+				Title:     "Book One",
+				Author:    "Book Author",
+				CreatedAt: 1788410288537,
+				UpdatedAt: 1788410288537,
+			},
+			{
+				Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
+				Title:     "Book Two",
+				Author:    "Book Author",
+				CreatedAt: 1788410288537,
+				UpdatedAt: 1788410288537,
+			},
+			{
+				Id:        "5a5a9021-7b19-47f4-bda8-05d2551f8ed8",
+				Title:     "Book Three",
+				Author:    "Book Author",
+				CreatedAt: 1788410288537,
+				UpdatedAt: 1788410288537,
+			},
+		},
+		Meta: response.ListMeta{
+			Page:       1,
+			PerPage:    10,
+			Total:      100,
+			TotalPages: 10,
+		},
+	}, res)
 }
 
 func TestFindBook(t *testing.T) {
@@ -73,9 +129,55 @@ func TestFindBook(t *testing.T) {
 	app.ServeHTTP(w, req)
 
 	// Assert
-	res := `{"success":true,"data":{"id":"348c6370-801d-4fab-80a3-5b3ecbc88760","title":"Book Two","author":"Book Author","created_at":1788410288537,"updated_at":1788410288537}}`
+	var res response.DataResponse[entity.Book]
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+
+	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, res, w.Body.String())
+	assert.Equal(t, response.DataResponse[entity.Book]{
+		Success: true,
+		Data: entity.Book{
+			Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
+			Title:     "Book Two",
+			Author:    "Book Author",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
+		},
+	}, res)
+}
+
+func TestUpdateBook(t *testing.T) {
+	// Arrange
+	app := gin.Default()
+	rg := app.Group("/api/v1")
+	routes.BookRouter(rg, NewMockSetup())
+
+	// Act
+	w := httptest.NewRecorder()
+
+	payload := request.BookCreate{Title: "Laskar Pelari", Author: "Andria Hirata"}
+	reqPayload, _ := json.Marshal(payload)
+
+	req, _ := http.NewRequest(http.MethodPut, "/api/v1/books/348c6370-801d-4fab-80a3-5b3ecbc88760", bytes.NewBuffer(reqPayload))
+	req.Header.Set("Content-Type", "application/json")
+	app.ServeHTTP(w, req)
+
+	// Assert
+	var res response.DataResponse[entity.Book]
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, response.DataResponse[entity.Book]{
+		Success: true,
+		Data: entity.Book{
+			Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
+			Title:     "Laskar Pelari",
+			Author:    "Andria Hirata",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
+		},
+	}, res)
 }
 
 func TestDeleteBook(t *testing.T) {
@@ -90,7 +192,12 @@ func TestDeleteBook(t *testing.T) {
 	app.ServeHTTP(w, req)
 
 	// Assert
-	res := `{"success":true}`
+	var res response.EmptyResponse
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+
+	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, res, w.Body.String())
+	assert.Equal(t, response.EmptyResponse{
+		Success: true,
+	}, res)
 }

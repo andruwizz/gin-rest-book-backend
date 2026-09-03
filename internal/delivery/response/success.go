@@ -5,29 +5,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type listMeta struct {
+type ListMeta struct {
 	Page       int `json:"page"`
 	PerPage    int `json:"per_page"`
 	Total      int `json:"total"`
 	TotalPages int `json:"total_pages"`
 }
 
-type DataResponse struct {
+type DataResponse[T entityType] struct {
 	Success bool `json:"success"`
-	Data    any  `json:"data"`
+	Data    T    `json:"data"`
 }
 
-type ListResponse struct {
+type ListResponse[T entityType] struct {
 	Success bool     `json:"success"`
-	Data    any      `json:"data"`
-	Meta    listMeta `json:"meta"`
+	Data    []T      `json:"data"`
+	Meta    ListMeta `json:"meta"`
 }
 
 type EmptyResponse struct {
 	Success bool `json:"success"`
 }
 
-type Data interface {
+type entityType interface {
 	entity.Book |
 		entity.User |
 		entity.AuthToken
@@ -41,20 +41,20 @@ func Empty(ctx *gin.Context, code int) {
 	ctx.JSON(code, res)
 }
 
-func Resource[T Data](ctx *gin.Context, code int, e *T) {
-	res := DataResponse{
+func Resource[T entityType](ctx *gin.Context, code int, e *T) {
+	res := DataResponse[T]{
 		Success: true,
-		Data:    e,
+		Data:    *e,
 	}
 
 	ctx.JSON(code, res)
 }
 
-func Collection[T Data](ctx *gin.Context, code int, e []T, p *entity.Pagination) {
-	col := ListResponse{
+func Collection[T entityType](ctx *gin.Context, code int, e []T, p *entity.Pagination) {
+	col := ListResponse[T]{
 		Success: true,
 		Data:    e,
-		Meta: listMeta{
+		Meta: ListMeta{
 			Page:       p.Page,
 			PerPage:    p.Limit,
 			Total:      int(p.TotalRecords),
