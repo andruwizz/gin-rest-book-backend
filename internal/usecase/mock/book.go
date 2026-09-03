@@ -40,26 +40,25 @@ func (c *mockBookUsecase) Create(req *request.BookCreate) (*entity.Book, error) 
 }
 
 func (c *mockBookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pagination, error) {
-	time := time.Now().UnixMilli()
 	res := []entity.Book{
 		{
-			Id:        uuid.NewString(),
+			Id:        "305c8059-28d7-49f7-a15c-acba512f2b0a",
 			Title:     "Book One",
-			Author:    "Book AUthor",
-			CreatedAt: time,
-			UpdatedAt: time,
+			Author:    "Book Author",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
 		}, {
-			Id:        uuid.NewString(),
+			Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 			Title:     "Book Two",
-			Author:    "Book AUthor",
-			CreatedAt: time,
-			UpdatedAt: time,
+			Author:    "Book Author",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
 		}, {
-			Id:        uuid.NewString(),
+			Id:        "5a5a9021-7b19-47f4-bda8-05d2551f8ed8",
 			Title:     "Book Three",
-			Author:    "Book AUthor",
-			CreatedAt: time,
-			UpdatedAt: time,
+			Author:    "Book Author",
+			CreatedAt: 1788410288537,
+			UpdatedAt: 1788410288537,
 		},
 	}
 
@@ -75,26 +74,24 @@ func (c *mockBookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pa
 }
 
 func (c *mockBookUsecase) Get(req *request.BookGet) (*entity.Book, error) {
-	time := time.Now().UnixMilli()
 	book := &entity.Book{
-		Id:        uuid.NewString(),
-		Title:     "Book Title",
-		Author:    "Book AUthor",
-		CreatedAt: time,
-		UpdatedAt: time,
+		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
+		Title:     "Book Two",
+		Author:    "Book Author",
+		CreatedAt: 1788410288537,
+		UpdatedAt: 1788410288537,
 	}
 
 	return book, nil
 }
 
 func (c *mockBookUsecase) Update(req *request.BookUpdate) (*entity.Book, error) {
-	timePass := time.Now().Add(time.Duration(-10) * time.Hour).UnixMilli()
 	timeNow := time.Now().UnixMilli()
 	book := &entity.Book{
-		Id:        uuid.NewString(),
+		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     req.Title,
 		Author:    req.Author,
-		CreatedAt: timePass,
+		CreatedAt: 1788410288537,
 		UpdatedAt: timeNow,
 	}
 
