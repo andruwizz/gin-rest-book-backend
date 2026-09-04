@@ -31,7 +31,7 @@ jobs:
         env:
           SVC_ID: ${{ secrets.RAILWAY_DATABASE_SERVICE_ID }}
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway run make migration-up
+        run: railway run --service=${{ env.SVC_ID }} make migration-up
 
   deploy:
     runs-on: ubuntu-latest
