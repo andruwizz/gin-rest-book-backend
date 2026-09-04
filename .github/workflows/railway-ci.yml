@@ -29,6 +29,7 @@ jobs:
 
       - name: Run migrations
         env:
+          SVC_ID: ${{ secrets.RAILWAY_DATABASE_SERVICE_ID }}
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway run make migration-up
 
@@ -37,7 +38,7 @@ jobs:
     needs: migrate
     container: ghcr.io/railwayapp/cli:latest
     env:
-      SVC_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
+      SVC_ID: ${{ secrets.RAILWAY_APP_SERVICE_ID }}
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v3
