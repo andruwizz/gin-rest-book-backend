@@ -22,7 +22,7 @@ migration $$(enter):
 	migrate create -ext sql -dir database/migrations $$migration_name
 
 migration-up:
-	migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" -path database/migrations up
+	migrate -database "${DATABASE_DSN}" -path database/migrations up
 
 migration-down:
-	migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" -path database/migrations down
+	migrate -database "${DATABASE_DSN}" -path database/migrations down
