@@ -22,7 +22,7 @@ migration $$(enter):
 	migrate create -ext sql -dir database/migrations $$migration_name
 
 migration-up:
-	migrate -database "${DATABASE_URL}" -path database/migrations up
+	migrate -database "${MYSQL_URL}" -path database/migrations up
 
 migration-down:
-	migrate -database "${DATABASE_URL}" -path database/migrations down
+	migrate -database "${MYSQL_URL}" -path database/migrations down
