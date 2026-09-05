@@ -25,7 +25,7 @@ migration $$(enter):
 	migrate create -ext sql -dir database/migrations $$migration_name
 
 migration-up:
-	migrate -database "$(MYSQL_PUBLIC_URL)" -path database/migrations up
+	migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}${DATABASE_PUBLIC_URL}/${DATABASE_NAME}" -path database/migrations up
 
 migration-down:
-	migrate -database "$(MYSQL_PUBLIC_URL)" -path database/migrations down
+	migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}${DATABASE_PUBLIC_URL}/${DATABASE_NAME}" -path database/migrations down
