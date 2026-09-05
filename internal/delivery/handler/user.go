@@ -25,7 +25,7 @@ func NewUserHandler(usecase usecase.UserUsecase) *UserHandler {
 // @Accept json
 // @Produce json
 // @Param Body body request.UserCreate true "Request body"
-// @Success 201 {object} response.DataResponse{data=entity.User}
+// @Success 201 {object} response.DataResponse[entity.User]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /users/register [POST]
 func (u *UserHandler) Register(ctx *gin.Context) {
@@ -51,7 +51,7 @@ func (u *UserHandler) Register(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Body body request.UserLogin true "Request body"
-// @Success 200 {object} response.DataResponse{data=entity.AuthToken}
+// @Success 200 {object} response.DataResponse[entity.AuthToken]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /users/login [POST]
 func (u *UserHandler) Login(ctx *gin.Context) {
@@ -77,7 +77,7 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Success 200 {object} response.DataResponse{data=entity.User}
+// @Success 200 {object} response.DataResponse[entity.User]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /users/current [GET]
 func (u *UserHandler) Current(ctx *gin.Context) {

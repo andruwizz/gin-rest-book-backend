@@ -24,5 +24,5 @@ func NewSwaggo(app *gin.Engine) {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	// Set Swagger Path
-	app.GET("/api/v1/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	app.GET("/api/v1/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
 }

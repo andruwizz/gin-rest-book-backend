@@ -23,9 +23,8 @@ func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
 // @Param Body body request.BookCreate true "Request body"
-// @Success 201 {object} response.DataResponse{data=entity.Book}
+// @Success 201 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books [POST]
 func (b *BookHandler) Create(ctx *gin.Context) {
@@ -50,10 +49,9 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
 // @Param limit query int false "Item count per page"
 // @Param page query int false "List page number"
-// @Success 200 {object} response.ListResponse{data=[]entity.Book}
+// @Success 200 {object} response.ListResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books [GET]
 func (b *BookHandler) List(ctx *gin.Context) {
@@ -78,9 +76,8 @@ func (b *BookHandler) List(ctx *gin.Context) {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
 // @Param id path string true "Book Id"
-// @Success 200 {object} response.DataResponse{data=entity.Book}
+// @Success 200 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [GET]
 func (b *BookHandler) Find(ctx *gin.Context) {
@@ -105,10 +102,9 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
 // @Param id path string true "Book Id"
 // @Param Body body request.BookUpdate true "Request body"
-// @Success 200 {object} response.DataResponse{data=entity.Book}
+// @Success 200 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [PUT]
 func (b *BookHandler) Update(ctx *gin.Context) {
@@ -135,7 +131,6 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Security ApiKeyAuth
 // @Param id path string true "Book Id"
 // @Success 200 {object} response.EmptyResponse
 // @Failure 400 {object} response.ErrorResponse

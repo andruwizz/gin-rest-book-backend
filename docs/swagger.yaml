@@ -1,36 +1,5 @@
 definitions:
-  entity.AuthToken:
-    properties:
-      token:
-        type: string
-    type: object
-  entity.Book:
-    properties:
-      author:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      title:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  entity.User:
-    properties:
-      created_at:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  request.BookCreate:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookCreate:
     properties:
       author:
         type: string
@@ -40,7 +9,7 @@ definitions:
     - author
     - title
     type: object
-  request.BookUpdate:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookUpdate:
     properties:
       author:
         type: string
@@ -50,7 +19,7 @@ definitions:
     - author
     - title
     type: object
-  request.UserCreate:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserCreate:
     properties:
       email:
         type: string
@@ -63,7 +32,7 @@ definitions:
     - name
     - password
     type: object
-  request.UserLogin:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserLogin:
     properties:
       email:
         type: string
@@ -73,42 +42,40 @@ definitions:
     - email
     - password
     type: object
-  response.DataResponse:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken:
     properties:
-      data: {}
+      data:
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken'
       success:
         type: boolean
     type: object
-  response.EmptyResponse:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book:
+    properties:
+      data:
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.Book'
+      success:
+        type: boolean
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User:
+    properties:
+      data:
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.User'
+      success:
+        type: boolean
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.EmptyResponse:
     properties:
       success:
         type: boolean
     type: object
-  response.ErrorResponse:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse:
     properties:
       error:
-        $ref: '#/definitions/response.errorDetail'
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.errorDetail'
       success:
         type: boolean
     type: object
-  response.ListResponse:
-    properties:
-      data: {}
-      meta:
-        $ref: '#/definitions/response.listMeta'
-      success:
-        type: boolean
-    type: object
-  response.errorDetail:
-    properties:
-      errors:
-        additionalProperties:
-          type: string
-        type: object
-      message:
-        type: string
-    type: object
-  response.listMeta:
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListMeta:
     properties:
       page:
         type: integer
@@ -118,6 +85,57 @@ definitions:
         type: integer
       total_pages:
         type: integer
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListResponse-entity_Book:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.Book'
+        type: array
+      meta:
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListMeta'
+      success:
+        type: boolean
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.errorDetail:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        type: object
+      message:
+        type: string
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken:
+    properties:
+      token:
+        type: string
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_entity.Book:
+    properties:
+      author:
+        type: string
+      created_at:
+        type: integer
+      id:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  github_com_andruwizz_gin-rest-book-backend_internal_entity.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
     type: object
 info:
   contact: {}
@@ -142,20 +160,11 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.ListResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/entity.Book'
-                  type: array
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListResponse-entity_Book'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: List all book
       tags:
       - Book
@@ -169,25 +178,18 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/request.BookCreate'
+          $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookCreate'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.Book'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Create a new book
       tags:
       - Book
@@ -208,13 +210,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.EmptyResponse'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.EmptyResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Delete a book
       tags:
       - Book
@@ -234,18 +234,11 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.Book'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Find a book
       tags:
       - Book
@@ -264,25 +257,18 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/request.BookUpdate'
+          $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookUpdate'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.Book'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Update a book
       tags:
       - Book
@@ -297,16 +283,11 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.User'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       security:
       - ApiKeyAuth: []
       summary: Get current user
@@ -323,23 +304,18 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/request.UserLogin'
+          $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserLogin'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.AuthToken'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Login as user
       tags:
       - User
@@ -354,23 +330,18 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/request.UserCreate'
+          $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserCreate'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            allOf:
-            - $ref: '#/definitions/response.DataResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/entity.User'
-              type: object
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
       summary: Register a new user
       tags:
       - User

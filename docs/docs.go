@@ -17,11 +17,6 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Get list of books data",
                 "consumes": [
                     "application/json"
@@ -51,38 +46,18 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/entity.Book"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListResponse-entity_Book"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Input new book with title and author name",
                 "consumes": [
                     "application/json"
@@ -101,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.BookCreate"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookCreate"
                         }
                     }
                 ],
@@ -109,25 +84,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.Book"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
@@ -135,11 +98,6 @@ const docTemplate = `{
         },
         "/books/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Get single book data",
                 "consumes": [
                     "application/json"
@@ -164,35 +122,18 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.Book"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update existing book",
                 "consumes": [
                     "application/json"
@@ -218,7 +159,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.BookUpdate"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookUpdate"
                         }
                     }
                 ],
@@ -226,35 +167,18 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.Book"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete single book data",
                 "consumes": [
                     "application/json"
@@ -279,13 +203,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.EmptyResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.EmptyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
@@ -313,25 +237,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.User"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
@@ -357,7 +269,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.UserLogin"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserLogin"
                         }
                     }
                 ],
@@ -365,25 +277,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.AuthToken"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
@@ -409,7 +309,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.UserCreate"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserCreate"
                         }
                     }
                 ],
@@ -417,25 +317,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.DataResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/entity.User"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse"
                         }
                     }
                 }
@@ -443,55 +331,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.AuthToken": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.Book": {
-            "type": "object",
-            "properties": {
-                "author": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.User": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "request.BookCreate": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookCreate": {
             "type": "object",
             "required": [
                 "author",
@@ -506,7 +346,7 @@ const docTemplate = `{
                 }
             }
         },
-        "request.BookUpdate": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.BookUpdate": {
             "type": "object",
             "required": [
                 "author",
@@ -521,7 +361,7 @@ const docTemplate = `{
                 }
             }
         },
-        "request.UserCreate": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserCreate": {
             "type": "object",
             "required": [
                 "email",
@@ -540,7 +380,7 @@ const docTemplate = `{
                 }
             }
         },
-        "request.UserLogin": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_request.UserLogin": {
             "type": "object",
             "required": [
                 "email",
@@ -555,16 +395,40 @@ const docTemplate = `{
                 }
             }
         },
-        "response.DataResponse": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken": {
             "type": "object",
             "properties": {
-                "data": {},
+                "data": {
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken"
+                },
                 "success": {
                     "type": "boolean"
                 }
             }
         },
-        "response.EmptyResponse": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.Book"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.User"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.EmptyResponse": {
             "type": "object",
             "properties": {
                 "success": {
@@ -572,44 +436,18 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ErrorResponse": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
-                    "$ref": "#/definitions/response.errorDetail"
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.errorDetail"
                 },
                 "success": {
                     "type": "boolean"
                 }
             }
         },
-        "response.ListResponse": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "meta": {
-                    "$ref": "#/definitions/response.listMeta"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "response.errorDetail": {
-            "type": "object",
-            "properties": {
-                "errors": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "response.listMeta": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListMeta": {
             "type": "object",
             "properties": {
                 "page": {
@@ -623,6 +461,85 @@ const docTemplate = `{
                 },
                 "total_pages": {
                     "type": "integer"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListResponse-entity_Book": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.Book"
+                    }
+                },
+                "meta": {
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ListMeta"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.errorDetail": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_entity.Book": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_entity.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         }

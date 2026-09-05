@@ -11,11 +11,14 @@ ifneq (,$(wildcard ./.env))
 	export
 endif
 
-run:
+run-api:
 	godotenv -f .env go run cmd/main.go
 
+run-test:
+	go test ./test
+
 api-docs:
-	swag init -g internal/config/swaggo.go
+	swag init -g internal/config/swaggo.go --parseDependency
 
 migration $$(enter):
 	@read -p "Migration name:" migration_name; \
