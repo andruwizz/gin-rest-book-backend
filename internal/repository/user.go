@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -21,17 +22,21 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (u *userRepository) Create(data *entity.User) error {
-	return u.db.Create(&data).Error
+	m := model.FromUserEntity(data)
+	return u.db.Create(m).Error
 }
 
 func (u *userRepository) Find(email string, data *entity.User) error {
-	return u.db.Where("email = ?", email).Take(data).Error
+	m := model.FromUserEntity(data)
+	return u.db.Where("email = ?", email).Take(m).Error
 }
 
 func (u *userRepository) Update(data *entity.User) error {
-	return u.db.Save(data).Error
+	m := model.FromUserEntity(data)
+	return u.db.Save(m).Error
 }
 
 func (u *userRepository) Delete(data *entity.User) error {
-	return u.db.Delete(data).Error
+	m := model.FromUserEntity(data)
+	return u.db.Delete(m).Error
 }

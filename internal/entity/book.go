@@ -1,33 +1,9 @@
 package entity
 
-import (
-	"time"
-
-	"github.com/google/uuid"
-	"gorm.io/gorm"
-)
-
 type Book struct {
-	Id        string `gorm:"type:uuid;primaryKey" json:"id"`
-	Title     string `gorm:"type:varchar" json:"title"`
-	Author    string `gorm:"type:varchar" json:"author"`
-	CreatedAt int64  `gorm:"type:bigint" json:"created_at"`
-	UpdatedAt int64  `gorm:"type:bigint" json:"updated_at"`
-}
-
-func (b *Book) BeforeCreate(tx *gorm.DB) error {
-	uuid := uuid.New()
-	time := time.Now().UnixMilli()
-	tx.Statement.SetColumn("id", uuid)
-	tx.Statement.SetColumn("CreatedAt", time)
-	tx.Statement.SetColumn("UpdatedAt", time)
-
-	return nil
-}
-
-func (b *Book) BeforeUpdate(tx *gorm.DB) error {
-	time := time.Now().UnixMilli()
-	tx.Statement.SetColumn("UpdatedAt", time)
-
-	return nil
+	Id        string `json:"id"`
+	Title     string `json:"title"`
+	Author    string `json:"author"`
+	CreatedAt int64  `json:"created_at"`
+	UpdatedAt int64  `json:"updated_at"`
 }

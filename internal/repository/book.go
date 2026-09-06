@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -26,7 +27,8 @@ func NewBookRepository(db *gorm.DB) BookRepository {
 }
 
 func (b *bookRepository) Create(data *entity.Book) error {
-	return b.db.Create(&data).Error
+	m := model.FromBookEntity(data)
+	return b.db.Create(m).Error
 }
 
 func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagination, error) {
@@ -39,7 +41,7 @@ func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagin
 	pagination.Limit = limit
 	pagination.Page = page
 
-	query.Model(books).Count(&totalRecords)
+	query.Model(&model.Book{}).Count(&totalRecords)
 
 	pagination.TotalRecords = totalRecords
 	pagination.TotalPage = int(math.Ceil(float64(totalRecords) / float64(pagination.GetPageLimit())))
@@ -60,13 +62,16 @@ func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagin
 }
 
 func (b *bookRepository) Find(id string, data *entity.Book) error {
-	return b.db.Where("id = ?", id).Take(data).Error
+	m := model.FromBookEntity(data)
+	return b.db.Where("id = ?", id).Take(m).Error
 }
 
 func (b *bookRepository) Update(data *entity.Book) error {
-	return b.db.Save(data).Error
+	m := model.FromBookEntity(data)
+	return b.db.Save(m).Error
 }
 
 func (b *bookRepository) Delete(data *entity.Book) error {
-	return b.db.Delete(data).Error
+	m := model.FromBookEntity(data)
+	return b.db.Delete(m).Error
 }
