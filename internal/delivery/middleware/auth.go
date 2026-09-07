@@ -2,17 +2,16 @@ package middleware
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 
-func Authenticated() gin.HandlerFunc {
+func Authenticated(authHelper *helper.AuthHelper) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
-		claims, err := helper.DecodeAuthToken(authHeader)
+		claims, err := authHelper.DecodeAuthToken(authHeader)
 		if err != nil {
 			response.ErrorResource(ctx, http.StatusUnauthorized, err)
 			ctx.Abort()
@@ -20,7 +19,7 @@ func Authenticated() gin.HandlerFunc {
 		}
 
 		userInfo := map[string]string{"name": claims.Name, "email": claims.Email}
-		ctx.Set(os.Getenv("AUTH_CONTEXT_KEY"), userInfo)
+		authHelper.SetAuthContext(ctx, userInfo)
 		ctx.Next()
 	}
 }

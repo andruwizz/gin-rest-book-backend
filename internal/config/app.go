@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/handler"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/routes"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/book"
 	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/user"
@@ -11,6 +12,7 @@ import (
 )
 
 type BootstrapConfig struct {
+	Env *Env
 	DB  *gorm.DB
 	App *gin.Engine
 }
@@ -20,9 +22,12 @@ func Bootstrap(config *BootstrapConfig) {
 	bookRepository := repository.NewBookRepository(config.DB)
 	userRepository := repository.NewUserRepository(config.DB)
 
+	// Setup helper
+	authHelper := helper.NewAuthHelper(config.Env.AuthContextKey, config.Env.AuthTokenDuration, config.Env.AuthSignatureKey)
+
 	// Setup Service
 	bookService := book.NewBookUsecase(bookRepository)
-	userService := user.NewUserUsecase(userRepository)
+	userService := user.NewUserUsecase(userRepository, authHelper)
 
 	// Setup Handler
 	bookHandler := handler.NewBookHandler(bookService)
@@ -31,8 +36,8 @@ func Bootstrap(config *BootstrapConfig) {
 	// Setup Router
 	rg := config.App.Group("/api/v1")
 	routes.BookRouter(rg, bookHandler)
-	routes.UserRouter(rg, userHandler)
+	routes.UserRouter(rg, userHandler, authHelper)
 
 	// Setup API Documentation
-	NewSwaggo(config.App)
+	NewSwaggo(config.App, config.Env)
 }

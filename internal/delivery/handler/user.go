@@ -5,7 +5,6 @@ import (
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
-	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/user"
 	"github.com/gin-gonic/gin"
 )
@@ -91,7 +90,9 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 // @Router /users/current [GET]
 func (u *UserHandler) Current(ctx *gin.Context) {
 	req := new(request.UserGet)
-	err := helper.GetAuthUser(ctx, req)
+	err := u.usecase.GetCurrentUser(ctx, &user.UserGetParam{
+		Email: req.Email,
+	})
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return

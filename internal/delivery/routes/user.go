@@ -3,12 +3,13 @@ package routes
 import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/handler"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/middleware"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 
-func UserRouter(r *gin.RouterGroup, h *handler.UserHandler) {
+func UserRouter(r *gin.RouterGroup, h *handler.UserHandler, ah *helper.AuthHelper) {
 	users := r.Group("/users")
 	users.POST("/register", h.Register)
 	users.POST("/login", h.Login)
-	users.GET("/current", middleware.Authenticated(), h.Current)
+	users.GET("/current", middleware.Authenticated(ah), h.Current)
 }

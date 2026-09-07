@@ -2,17 +2,24 @@ package helper
 
 import (
 	"errors"
-	"os"
-	"strconv"
 	"strings"
 	"time"
 
-	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
+
+type AuthHelper struct {
+	contextKey    string
+	tokenDuration int // in hours
+	signatureKey  string
+}
+
+func NewAuthHelper(contextKey string, tokenDuration int, signatureKey string) *AuthHelper {
+	return &AuthHelper{contextKey, tokenDuration, signatureKey}
+}
 
 func EncryptAuthPassword(plain string) (string, error) {
 	encrypted, err := bcrypt.GenerateFromPassword([]byte(plain), 10)
@@ -31,8 +38,8 @@ func VerifyAuthPassword(plain string, encrypted string) error {
 	return nil
 }
 
-func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
-	duration, _ := strconv.Atoi(os.Getenv("AUTH_TOKEN_DURATION"))
+func (h *AuthHelper) EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
+	duration := h.tokenDuration
 	claims := entity.AuthClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "APP_NAME",
@@ -43,7 +50,7 @@ func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte(os.Getenv("AUTH_SIGNATURE_KEY")))
+	signedToken, err := token.SignedString([]byte(h.signatureKey))
 	if err != nil {
 		return nil, err
 	}
@@ -55,14 +62,14 @@ func EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	return resToken, nil
 }
 
-func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
+func (h *AuthHelper) DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 	if !strings.Contains(header, "Bearer ") {
 		return nil, errors.New("authentication token not found")
 	}
 
 	tokenString := strings.TrimPrefix(header, "Bearer ")
 	token, err := jwt.ParseWithClaims(tokenString, &entity.AuthClaim{}, func(t *jwt.Token) (any, error) {
-		return []byte(os.Getenv("AUTH_SIGNATURE_KEY")), nil
+		return []byte(h.signatureKey), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -76,14 +83,18 @@ func DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 	return nil, errors.New("failed decoding token")
 }
 
-func GetAuthUser(ctx *gin.Context, user *request.UserGet) error {
-	userInfo, ok := ctx.Get(os.Getenv("AUTH_CONTEXT_KEY"))
+func (h *AuthHelper) SetAuthContext(ctx *gin.Context, userInfo map[string]string) {
+	ctx.Set(h.contextKey, userInfo)
+}
+
+func (h *AuthHelper) GetAuthUser(ctx *gin.Context, user *entity.User) error {
+	userInfo, ok := ctx.Get(h.contextKey)
 	if !ok {
 		return errors.New("Unauthenticated")
 	}
 
 	userInfoMap := userInfo.(map[string]string)
-	user.Name = userInfoMap["user"]
+	user.Name = userInfoMap["name"]
 	user.Email = userInfoMap["email"]
 
 	return nil
