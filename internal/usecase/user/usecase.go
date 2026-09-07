@@ -1,16 +1,15 @@
-package usecase
+package user
 
 import (
-	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 )
 
 type UserUsecase interface {
-	Create(req *request.UserCreate) (*entity.User, error)
-	Login(req *request.UserLogin) (*entity.AuthToken, error)
-	Get(req *request.UserGet) (*entity.User, error)
+	Create(req *UserCreateParam) (*entity.User, error)
+	Login(req *UserLoginParam) (*entity.AuthToken, error)
+	Get(req *UserGetParam) (*entity.User, error)
 }
 
 type userUsecase struct {
@@ -21,7 +20,7 @@ func NewUserUsecase(repository repository.UserRepository) UserUsecase {
 	return &userUsecase{repository}
 }
 
-func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
+func (c *userUsecase) Create(req *UserCreateParam) (*entity.User, error) {
 	password, err := helper.EncryptAuthPassword(req.Password)
 	if err != nil {
 		return nil, err
@@ -41,7 +40,7 @@ func (c *userUsecase) Create(req *request.UserCreate) (*entity.User, error) {
 	return payload, nil
 }
 
-func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
+func (c *userUsecase) Login(req *UserLoginParam) (*entity.AuthToken, error) {
 	user := new(entity.User)
 	err := c.repository.Find(req.Email, user)
 	if err != nil {
@@ -60,7 +59,7 @@ func (c *userUsecase) Login(req *request.UserLogin) (*entity.AuthToken, error) {
 	return res, nil
 }
 
-func (c *userUsecase) Get(req *request.UserGet) (*entity.User, error) {
+func (c *userUsecase) Get(req *UserGetParam) (*entity.User, error) {
 	user := new(entity.User)
 	err := c.repository.Find(req.Email, user)
 	if err != nil {

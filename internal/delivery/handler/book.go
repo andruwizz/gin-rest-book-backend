@@ -5,15 +5,15 @@ import (
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
-	"github.com/andruwizz/gin-rest-book-backend/internal/usecase"
+	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/book"
 	"github.com/gin-gonic/gin"
 )
 
 type BookHandler struct {
-	usecase usecase.BookUsecase
+	usecase book.BookUsecase
 }
 
-func NewBookHandler(usecase usecase.BookUsecase) *BookHandler {
+func NewBookHandler(usecase book.BookUsecase) *BookHandler {
 	return &BookHandler{usecase}
 }
 
@@ -34,7 +34,11 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Create(req)
+	dto := &book.BookCreateParam{
+		Title:  req.Title,
+		Author: req.Author,
+	}
+	res, err := b.usecase.Create(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -61,7 +65,12 @@ func (b *BookHandler) List(ctx *gin.Context) {
 		return
 	}
 
-	res, pagination, err := b.usecase.List(req)
+	dto := &book.BookListParam{
+		Limit: req.Limit,
+		Page:  req.Page,
+	}
+
+	res, pagination, err := b.usecase.List(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -87,7 +96,11 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Get(req)
+	dto := &book.BookGetParam{
+		Id: req.Id,
+	}
+
+	res, err := b.usecase.Get(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -116,7 +129,13 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	res, err := b.usecase.Update(req)
+	dto := &book.BookUpdateParam{
+		Id:     req.Id,
+		Title:  req.Title,
+		Author: req.Author,
+	}
+
+	res, err := b.usecase.Update(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -142,7 +161,11 @@ func (b *BookHandler) Delete(ctx *gin.Context) {
 		return
 	}
 
-	err := b.usecase.Delete(req)
+	dto := &book.BookDeleteParam{
+		Id: req.Id,
+	}
+
+	err := b.usecase.Delete(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return

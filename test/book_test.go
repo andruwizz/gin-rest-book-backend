@@ -14,7 +14,7 @@ import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/routes"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	repoMock "github.com/andruwizz/gin-rest-book-backend/internal/repository/mock"
-	usecaseMock "github.com/andruwizz/gin-rest-book-backend/internal/usecase/mock"
+	usecaseMock "github.com/andruwizz/gin-rest-book-backend/internal/usecase/book/mock"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

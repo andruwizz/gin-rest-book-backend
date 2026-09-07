@@ -1,18 +1,18 @@
 package mock
 
 import (
-	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
 	"github.com/andruwizz/gin-rest-book-backend/internal/repository/mock"
+	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/book"
 )
 
 type BookUsecase interface {
-	Create(req *request.BookCreate) (*entity.Book, error)
-	List(req *request.BookList) ([]entity.Book, *entity.Pagination, error)
-	Get(req *request.BookGet) (*entity.Book, error)
-	Update(req *request.BookUpdate) (*entity.Book, error)
-	Delete(req *request.BookDelete) error
+	Create(req *book.BookCreateParam) (*entity.Book, error)
+	List(req *book.BookListParam) ([]entity.Book, *entity.Pagination, error)
+	Get(req *book.BookGetParam) (*entity.Book, error)
+	Update(req *book.BookUpdateParam) (*entity.Book, error)
+	Delete(req *book.BookDeleteParam) error
 }
 
 type mockBookUsecase struct {
@@ -23,7 +23,7 @@ func NewMockBookUsecase(repository repository.BookRepository) BookUsecase {
 	return &mockBookUsecase{repository}
 }
 
-func (c *mockBookUsecase) Create(req *request.BookCreate) (*entity.Book, error) {
+func (c *mockBookUsecase) Create(req *book.BookCreateParam) (*entity.Book, error) {
 	book := &entity.Book{
 		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     req.Title,
@@ -35,7 +35,7 @@ func (c *mockBookUsecase) Create(req *request.BookCreate) (*entity.Book, error) 
 	return book, nil
 }
 
-func (c *mockBookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pagination, error) {
+func (c *mockBookUsecase) List(req *book.BookListParam) ([]entity.Book, *entity.Pagination, error) {
 	res := []entity.Book{
 		{
 			Id:        "305c8059-28d7-49f7-a15c-acba512f2b0a",
@@ -69,7 +69,7 @@ func (c *mockBookUsecase) List(req *request.BookList) ([]entity.Book, *entity.Pa
 	return res, pagination, nil
 }
 
-func (c *mockBookUsecase) Get(req *request.BookGet) (*entity.Book, error) {
+func (c *mockBookUsecase) Get(req *book.BookGetParam) (*entity.Book, error) {
 	book := &entity.Book{
 		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     "Book Two",
@@ -81,7 +81,7 @@ func (c *mockBookUsecase) Get(req *request.BookGet) (*entity.Book, error) {
 	return book, nil
 }
 
-func (c *mockBookUsecase) Update(req *request.BookUpdate) (*entity.Book, error) {
+func (c *mockBookUsecase) Update(req *book.BookUpdateParam) (*entity.Book, error) {
 	book := &entity.Book{
 		Id:        "348c6370-801d-4fab-80a3-5b3ecbc88760",
 		Title:     req.Title,
@@ -93,6 +93,6 @@ func (c *mockBookUsecase) Update(req *request.BookUpdate) (*entity.Book, error) 
 	return book, nil
 }
 
-func (c *mockBookUsecase) Delete(req *request.BookDelete) error {
+func (c *mockBookUsecase) Delete(req *book.BookDeleteParam) error {
 	return nil
 }

@@ -6,15 +6,15 @@ import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
-	"github.com/andruwizz/gin-rest-book-backend/internal/usecase"
+	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/user"
 	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
-	usecase usecase.UserUsecase
+	usecase user.UserUsecase
 }
 
-func NewUserHandler(usecase usecase.UserUsecase) *UserHandler {
+func NewUserHandler(usecase user.UserUsecase) *UserHandler {
 	return &UserHandler{usecase}
 }
 
@@ -35,7 +35,12 @@ func (u *UserHandler) Register(ctx *gin.Context) {
 		return
 	}
 
-	res, err := u.usecase.Create(req)
+	dto := &user.UserCreateParam{
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: req.Password,
+	}
+	res, err := u.usecase.Create(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -61,7 +66,11 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	res, err := u.usecase.Login(req)
+	dto := &user.UserLoginParam{
+		Email:    req.Email,
+		Password: req.Password,
+	}
+	res, err := u.usecase.Login(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
@@ -88,7 +97,11 @@ func (u *UserHandler) Current(ctx *gin.Context) {
 		return
 	}
 
-	res, err := u.usecase.Get(req)
+	dto := &user.UserGetParam{
+		Name:  req.Name,
+		Email: req.Email,
+	}
+	res, err := u.usecase.Get(dto)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
