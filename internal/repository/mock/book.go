@@ -52,12 +52,13 @@ func (b *mockBookRepository) List(limit int, page int) ([]entity.Book, *entity.P
 }
 
 func (b *mockBookRepository) Find(id string, data *entity.Book) error {
-	*data = *b.book[id]
-	if data != nil {
-		return nil
+	found, ok := b.book[id]
+	if !ok || found == nil {
+		return errors.New("record not found")
 	}
 
-	return errors.New("record not found")
+	*data = *found
+	return nil
 }
 
 func (b *mockBookRepository) Update(data *entity.Book) error {
@@ -66,6 +67,6 @@ func (b *mockBookRepository) Update(data *entity.Book) error {
 }
 
 func (b *mockBookRepository) Delete(data *entity.Book) error {
-	b.book[data.Id] = nil
+	delete(b.book, data.Id)
 	return nil
 }

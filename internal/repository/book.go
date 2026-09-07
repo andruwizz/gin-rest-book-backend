@@ -36,7 +36,7 @@ func (b *bookRepository) Create(data *entity.Book) error {
 }
 
 func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagination, error) {
-	var records []entity.Book
+	var records []model.Book
 	var pagination entity.Pagination
 	var totalRecords int64
 
@@ -60,7 +60,9 @@ func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagin
 	}
 
 	books := make([]entity.Book, len(records))
-	copy(books, records)
+	for i, r := range records {
+		books[i] = *r.ToEntity()
+	}
 	pagination.Records = int64(pagination.Limit*(pagination.Page-1)) + int64(len(books))
 
 	return books, &pagination, nil
