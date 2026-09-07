@@ -12,13 +12,14 @@ import (
 )
 
 type AuthHelper struct {
+	appName       string
 	contextKey    string
 	tokenDuration int // in hours
 	signatureKey  string
 }
 
-func NewAuthHelper(contextKey string, tokenDuration int, signatureKey string) *AuthHelper {
-	return &AuthHelper{contextKey, tokenDuration, signatureKey}
+func NewAuthHelper(appName string, contextKey string, tokenDuration int, signatureKey string) *AuthHelper {
+	return &AuthHelper{appName, contextKey, tokenDuration, signatureKey}
 }
 
 func EncryptAuthPassword(plain string) (string, error) {
@@ -42,7 +43,7 @@ func (h *AuthHelper) EncodeAuthToken(user *entity.User) (*entity.AuthToken, erro
 	duration := h.tokenDuration
 	claims := entity.AuthClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "APP_NAME",
+			Issuer:    h.appName,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(duration) * time.Hour)),
 		},
 		Name:  user.Name,

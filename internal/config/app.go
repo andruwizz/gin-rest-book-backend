@@ -23,7 +23,7 @@ func Bootstrap(config *BootstrapConfig) {
 	userRepository := repository.NewUserRepository(config.DB)
 
 	// Setup helper
-	authHelper := helper.NewAuthHelper(config.Env.AuthContextKey, config.Env.AuthTokenDuration, config.Env.AuthSignatureKey)
+	authHelper := helper.NewAuthHelper(config.Env.AppName, config.Env.AuthContextKey, config.Env.AuthTokenDuration, config.Env.AuthSignatureKey)
 
 	// Setup Service
 	bookService := book.NewBookUsecase(bookRepository)

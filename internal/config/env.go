@@ -6,6 +6,7 @@ import (
 )
 
 type Env struct {
+	AppName string
 	AppHost string
 	AppPort string
 
@@ -27,6 +28,7 @@ func NewEnv() *Env {
 	duration, _ := strconv.Atoi(os.Getenv("AUTH_TOKEN_DURATION"))
 
 	return &Env{
+		AppName: os.Getenv("APP_NAME"),
 		AppHost: os.Getenv("APP_HOST"),
 		AppPort: os.Getenv("APP_PORT"),
 
