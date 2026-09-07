@@ -18,6 +18,12 @@ type AuthHelper struct {
 	signatureKey  string
 }
 
+type authClaim struct {
+	jwt.RegisteredClaims
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
 func NewAuthHelper(appName string, contextKey string, tokenDuration int, signatureKey string) *AuthHelper {
 	return &AuthHelper{appName, contextKey, tokenDuration, signatureKey}
 }
@@ -41,7 +47,7 @@ func VerifyAuthPassword(plain string, encrypted string) error {
 
 func (h *AuthHelper) EncodeAuthToken(user *entity.User) (*entity.AuthToken, error) {
 	duration := h.tokenDuration
-	claims := entity.AuthClaim{
+	claims := authClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    h.appName,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(duration) * time.Hour)),
@@ -63,13 +69,14 @@ func (h *AuthHelper) EncodeAuthToken(user *entity.User) (*entity.AuthToken, erro
 	return resToken, nil
 }
 
-func (h *AuthHelper) DecodeAuthToken(header string) (*entity.AuthClaim, error) {
+func (h *AuthHelper) DecodeAuthToken(header string) (*entity.User, error) {
 	if !strings.Contains(header, "Bearer ") {
 		return nil, errors.New("authentication token not found")
 	}
 
 	tokenString := strings.TrimPrefix(header, "Bearer ")
-	token, err := jwt.ParseWithClaims(tokenString, &entity.AuthClaim{}, func(t *jwt.Token) (any, error) {
+	claims := new(authClaim)
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (any, error) {
 		return []byte(h.signatureKey), nil
 	})
 
@@ -77,11 +84,7 @@ func (h *AuthHelper) DecodeAuthToken(header string) (*entity.AuthClaim, error) {
 		return nil, err
 	}
 
-	if claims, ok := token.Claims.(*entity.AuthClaim); ok {
-		return claims, nil
-	}
-
-	return nil, errors.New("failed decoding token")
+	return &entity.User{Name: claims.Name, Email: claims.Email}, nil
 }
 
 func (h *AuthHelper) SetAuthContext(ctx *gin.Context, userInfo map[string]string) {

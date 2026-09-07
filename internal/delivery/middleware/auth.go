@@ -11,14 +11,14 @@ import (
 func Authenticated(authHelper *helper.AuthHelper) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
-		claims, err := authHelper.DecodeAuthToken(authHeader)
+		user, err := authHelper.DecodeAuthToken(authHeader)
 		if err != nil {
 			response.ErrorResource(ctx, http.StatusUnauthorized, err)
 			ctx.Abort()
 			return
 		}
 
-		userInfo := map[string]string{"name": claims.Name, "email": claims.Email}
+		userInfo := map[string]string{"name": user.Name, "email": user.Email}
 		authHelper.SetAuthContext(ctx, userInfo)
 		ctx.Next()
 	}
