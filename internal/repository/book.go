@@ -28,27 +28,28 @@ func NewBookRepository(db *gorm.DB) BookRepository {
 
 func (b *bookRepository) Create(data *entity.Book) error {
 	m := model.FromBookEntity(data)
-	return b.db.Create(m).Error
+	if err := b.db.Create(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagination, error) {
-	var books []entity.Book
+	var records []entity.Book
 	var pagination entity.Pagination
 	var totalRecords int64
 
-	query := b.db
+	query := b.db.Model(&model.Book{})
 
 	pagination.Limit = limit
 	pagination.Page = page
-
-	query.Model(&model.Book{}).Count(&totalRecords)
-
+	query.Count(&totalRecords)
 	pagination.TotalRecords = totalRecords
 	pagination.TotalPage = int(math.Ceil(float64(totalRecords) / float64(pagination.GetPageLimit())))
-	pagination.Records = int64(pagination.Limit*(pagination.Page-1)) + int64(len(books))
 
 	err := query.Clauses(clause.Limit{Offset: pagination.GetOffset(), Limit: &pagination.Limit}).
-		Find(&books).
+		Find(&records).
 		Error
 
 	if err != nil {
@@ -58,20 +59,35 @@ func (b *bookRepository) List(limit int, page int) ([]entity.Book, *entity.Pagin
 		return nil, nil, err
 	}
 
+	books := make([]entity.Book, len(records))
+	copy(books, records)
+	pagination.Records = int64(pagination.Limit*(pagination.Page-1)) + int64(len(books))
+
 	return books, &pagination, nil
 }
 
 func (b *bookRepository) Find(id string, data *entity.Book) error {
 	m := model.FromBookEntity(data)
-	return b.db.Where("id = ?", id).Take(m).Error
+	if err := b.db.Where("id = ?", id).Take(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (b *bookRepository) Update(data *entity.Book) error {
 	m := model.FromBookEntity(data)
-	return b.db.Save(m).Error
+	if err := b.db.Save(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (b *bookRepository) Delete(data *entity.Book) error {
 	m := model.FromBookEntity(data)
-	return b.db.Delete(m).Error
+	if err := b.db.Delete(m).Error; err != nil {
+		return err
+	}
+	return nil
 }

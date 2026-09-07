@@ -23,20 +23,35 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 func (u *userRepository) Create(data *entity.User) error {
 	m := model.FromUserEntity(data)
-	return u.db.Create(m).Error
+	if err := u.db.Create(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (u *userRepository) Find(email string, data *entity.User) error {
 	m := model.FromUserEntity(data)
-	return u.db.Where("email = ?", email).Take(m).Error
+	if err := u.db.Where("email = ?", email).Take(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (u *userRepository) Update(data *entity.User) error {
 	m := model.FromUserEntity(data)
-	return u.db.Save(m).Error
+	if err := u.db.Save(m).Error; err != nil {
+		return err
+	}
+	*data = *m.ToEntity()
+	return nil
 }
 
 func (u *userRepository) Delete(data *entity.User) error {
 	m := model.FromUserEntity(data)
-	return u.db.Delete(m).Error
+	if err := u.db.Delete(m).Error; err != nil {
+		return err
+	}
+	return nil
 }

@@ -52,7 +52,7 @@ func (b *mockBookRepository) List(limit int, page int) ([]entity.Book, *entity.P
 }
 
 func (b *mockBookRepository) Find(id string, data *entity.Book) error {
-	data = b.book[id]
+	*data = *b.book[id]
 	if data != nil {
 		return nil
 	}
