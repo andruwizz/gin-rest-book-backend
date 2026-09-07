@@ -2,8 +2,6 @@ package mock
 
 import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
-	"github.com/andruwizz/gin-rest-book-backend/internal/repository"
-	"github.com/andruwizz/gin-rest-book-backend/internal/repository/mock"
 	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/book"
 )
 
@@ -15,12 +13,10 @@ type BookUsecase interface {
 	Delete(req *book.BookDeleteParam) error
 }
 
-type mockBookUsecase struct {
-	repository mock.BookRepository
-}
+type mockBookUsecase struct{}
 
-func NewMockBookUsecase(repository repository.BookRepository) BookUsecase {
-	return &mockBookUsecase{repository}
+func NewMockBookUsecase() BookUsecase {
+	return &mockBookUsecase{}
 }
 
 func (c *mockBookUsecase) Create(req *book.BookCreateParam) (*entity.Book, error) {
