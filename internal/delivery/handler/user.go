@@ -5,16 +5,19 @@ import (
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/request"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
+	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	"github.com/andruwizz/gin-rest-book-backend/internal/usecase/user"
 	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
-	usecase user.UserUsecase
+	usecase    user.UserUsecase
+	authHelper *helper.AuthHelper
 }
 
-func NewUserHandler(usecase user.UserUsecase) *UserHandler {
-	return &UserHandler{usecase}
+func NewUserHandler(usecase user.UserUsecase, authHelper *helper.AuthHelper) *UserHandler {
+	return &UserHandler{usecase, authHelper}
 }
 
 // Register godoc
@@ -89,18 +92,16 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 // @Failure 400 {object} response.ErrorResponse
 // @Router /users/current [GET]
 func (u *UserHandler) Current(ctx *gin.Context) {
-	req := new(request.UserGet)
-	err := u.usecase.GetCurrentUser(ctx, &user.UserGetParam{
-		Email: req.Email,
-	})
+	current := new(entity.User)
+	err := u.authHelper.GetAuthUser(ctx, current)
 	if err != nil {
 		response.ErrorResource(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	dto := &user.UserGetParam{
-		Name:  req.Name,
-		Email: req.Email,
+		Name:  current.Name,
+		Email: current.Email,
 	}
 	res, err := u.usecase.Get(dto)
 	if err != nil {
