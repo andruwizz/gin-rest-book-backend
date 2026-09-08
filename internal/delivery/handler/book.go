@@ -24,6 +24,7 @@ func NewBookHandler(usecase book.BookUsecase) *BookHandler {
 // @Accept json
 // @Produce json
 // @Param Body body request.BookCreate true "Request body"
+// @Security ApiKeyAuth
 // @Success 201 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books [POST]
@@ -55,6 +56,7 @@ func (b *BookHandler) Create(ctx *gin.Context) {
 // @Produce json
 // @Param limit query int false "Item count per page"
 // @Param page query int false "List page number"
+// @Security ApiKeyAuth
 // @Success 200 {object} response.ListResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books [GET]
@@ -86,6 +88,7 @@ func (b *BookHandler) List(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
+// @Security ApiKeyAuth
 // @Success 200 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [GET]
@@ -117,6 +120,7 @@ func (b *BookHandler) Find(ctx *gin.Context) {
 // @Produce json
 // @Param id path string true "Book Id"
 // @Param Body body request.BookUpdate true "Request body"
+// @Security ApiKeyAuth
 // @Success 200 {object} response.DataResponse[entity.Book]
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [PUT]
@@ -151,6 +155,7 @@ func (b *BookHandler) Update(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book Id"
+// @Security ApiKeyAuth
 // @Success 200 {object} response.EmptyResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Router /books/{id} [DELETE]

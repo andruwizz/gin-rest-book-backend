@@ -115,11 +115,11 @@ make api-docs
 | POST   | `/users/register` | Register a new user          | No             |
 | POST   | `/users/login`    | Login and receive a JWT      | No             |
 | GET    | `/users/current`  | Get the current authenticated user | Yes      |
-| POST   | `/books/`         | Create a book                 | -              |
-| GET    | `/books/`         | List all books                | -              |
-| GET    | `/books/:id`      | Get a book by ID              | -              |
-| PUT    | `/books/:id`      | Update a book by ID           | -              |
-| DELETE | `/books/:id`      | Delete a book by ID           | -              |
+| POST   | `/books/`         | Create a book                 | Yes            |
+| GET    | `/books/`         | List all books                | Yes            |
+| GET    | `/books/:id`      | Get a book by ID              | Yes            |
+| PUT    | `/books/:id`      | Update a book by ID           | Yes            |
+| DELETE | `/books/:id`      | Delete a book by ID           | Yes            |
 
 ## Database Migrations
 

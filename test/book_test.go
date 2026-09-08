@@ -13,6 +13,7 @@ import (
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/response"
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/routes"
 	"github.com/andruwizz/gin-rest-book-backend/internal/entity"
+	"github.com/andruwizz/gin-rest-book-backend/internal/helper"
 	usecaseMock "github.com/andruwizz/gin-rest-book-backend/internal/usecase/book/mock"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -23,18 +24,23 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func NewMockSetup() *handler.BookHandler {
+func NewBookMockSetup() (*handler.BookHandler, *helper.AuthHelper) {
+	authHelper := helper.NewAuthHelper("Book REST Backend", "userInfo", 1, "test-signature-key")
 	bookService := usecaseMock.NewMockBookUsecase()
 	bookHandler := handler.NewBookHandler(bookService)
 
-	return bookHandler
+	return bookHandler, authHelper
 }
 
 func TestCreateBook(t *testing.T) {
 	// Arrange
 	app := gin.Default()
 	rg := app.Group("/api/v1")
-	routes.BookRouter(rg, NewMockSetup())
+	bookHandler, authHelper := NewBookMockSetup()
+	routes.BookRouter(rg, bookHandler, authHelper)
+
+	token, err := authHelper.EncodeAuthToken(&entity.User{Name: "John Doe", Email: "john.doe@example.com"})
+	assert.NoError(t, err)
 
 	// Act
 	w := httptest.NewRecorder()
@@ -43,12 +49,13 @@ func TestCreateBook(t *testing.T) {
 	reqPayload, _ := json.Marshal(payload)
 
 	req, _ := http.NewRequest(http.MethodPost, "/api/v1/books/", bytes.NewBuffer(reqPayload))
+	req.Header.Set("Authorization", "Bearer "+token.Token)
 	req.Header.Set("Content-Type", "application/json")
 	app.ServeHTTP(w, req)
 
 	// Assert
 	var res response.DataResponse[entity.Book]
-	err := json.Unmarshal(w.Body.Bytes(), &res)
+	err = json.Unmarshal(w.Body.Bytes(), &res)
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusCreated, w.Code)
@@ -68,16 +75,21 @@ func TestListBook(t *testing.T) {
 	// Arrange
 	app := gin.Default()
 	rg := app.Group("/api/v1")
-	routes.BookRouter(rg, NewMockSetup())
+	bookHandler, authHelper := NewBookMockSetup()
+	routes.BookRouter(rg, bookHandler, authHelper)
+
+	token, err := authHelper.EncodeAuthToken(&entity.User{Name: "John Doe", Email: "john.doe@example.com"})
+	assert.NoError(t, err)
 
 	// Act
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodGet, "/api/v1/books/", nil)
+	req.Header.Set("Authorization", "Bearer "+token.Token)
 	app.ServeHTTP(w, req)
 
 	// Assert
 	var res response.ListResponse[entity.Book]
-	err := json.Unmarshal(w.Body.Bytes(), &res)
+	err = json.Unmarshal(w.Body.Bytes(), &res)
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -119,16 +131,21 @@ func TestFindBook(t *testing.T) {
 	// Arrange
 	app := gin.Default()
 	rg := app.Group("/api/v1")
-	routes.BookRouter(rg, NewMockSetup())
+	bookHandler, authHelper := NewBookMockSetup()
+	routes.BookRouter(rg, bookHandler, authHelper)
+
+	token, err := authHelper.EncodeAuthToken(&entity.User{Name: "John Doe", Email: "john.doe@example.com"})
+	assert.NoError(t, err)
 
 	// Act
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodGet, "/api/v1/books/348c6370-801d-4fab-80a3-5b3ecbc88760", nil)
+	req.Header.Set("Authorization", "Bearer "+token.Token)
 	app.ServeHTTP(w, req)
 
 	// Assert
 	var res response.DataResponse[entity.Book]
-	err := json.Unmarshal(w.Body.Bytes(), &res)
+	err = json.Unmarshal(w.Body.Bytes(), &res)
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -148,7 +165,11 @@ func TestUpdateBook(t *testing.T) {
 	// Arrange
 	app := gin.Default()
 	rg := app.Group("/api/v1")
-	routes.BookRouter(rg, NewMockSetup())
+	bookHandler, authHelper := NewBookMockSetup()
+	routes.BookRouter(rg, bookHandler, authHelper)
+
+	token, err := authHelper.EncodeAuthToken(&entity.User{Name: "John Doe", Email: "john.doe@example.com"})
+	assert.NoError(t, err)
 
 	// Act
 	w := httptest.NewRecorder()
@@ -157,12 +178,13 @@ func TestUpdateBook(t *testing.T) {
 	reqPayload, _ := json.Marshal(payload)
 
 	req, _ := http.NewRequest(http.MethodPut, "/api/v1/books/348c6370-801d-4fab-80a3-5b3ecbc88760", bytes.NewBuffer(reqPayload))
+	req.Header.Set("Authorization", "Bearer "+token.Token)
 	req.Header.Set("Content-Type", "application/json")
 	app.ServeHTTP(w, req)
 
 	// Assert
 	var res response.DataResponse[entity.Book]
-	err := json.Unmarshal(w.Body.Bytes(), &res)
+	err = json.Unmarshal(w.Body.Bytes(), &res)
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -182,16 +204,21 @@ func TestDeleteBook(t *testing.T) {
 	// Arrange
 	app := gin.Default()
 	rg := app.Group("/api/v1")
-	routes.BookRouter(rg, NewMockSetup())
+	bookHandler, authHelper := NewBookMockSetup()
+	routes.BookRouter(rg, bookHandler, authHelper)
+
+	token, err := authHelper.EncodeAuthToken(&entity.User{Name: "John Doe", Email: "john.doe@example.com"})
+	assert.NoError(t, err)
 
 	// Act
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodDelete, "/api/v1/books/348c6370-801d-4fab-80a3-5b3ecbc88760", nil)
+	req.Header.Set("Authorization", "Bearer "+token.Token)
 	app.ServeHTTP(w, req)
 
 	// Assert
 	var res response.EmptyResponse
-	err := json.Unmarshal(w.Body.Bytes(), &res)
+	err = json.Unmarshal(w.Body.Bytes(), &res)
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, w.Code)

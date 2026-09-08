@@ -42,13 +42,6 @@ definitions:
     - email
     - password
     type: object
-  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken:
-    properties:
-      data:
-        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken'
-      success:
-        type: boolean
-    type: object
   github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book:
     properties:
       data:
@@ -56,8 +49,15 @@ definitions:
       success:
         type: boolean
     type: object
-  github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User:
-    properties:
+  ? github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_AuthToken
+  : properties:
+      data:
+        $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken'
+      success:
+        type: boolean
+    type: object
+  ? github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User
+  : properties:
       data:
         $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.User'
       success:
@@ -127,7 +127,7 @@ definitions:
   github_com_andruwizz_gin-rest-book-backend_internal_entity.User:
     properties:
       created_at:
-        type: string
+        type: integer
       email:
         type: string
       id:
@@ -135,7 +135,7 @@ definitions:
       name:
         type: string
       updated_at:
-        type: string
+        type: integer
     type: object
 info:
   contact: {}
@@ -165,6 +165,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: List all book
       tags:
       - Book
@@ -190,6 +192,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Create a new book
       tags:
       - Book
@@ -215,6 +219,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a book
       tags:
       - Book
@@ -239,6 +245,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Find a book
       tags:
       - Book
@@ -269,6 +277,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a book
       tags:
       - Book
@@ -283,7 +293,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User'
         "400":
           description: Bad Request
           schema:
@@ -311,7 +321,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_AuthToken'
         "400":
           description: Bad Request
           schema:
@@ -337,7 +347,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User'
+            $ref: '#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User'
         "400":
           description: Bad Request
           schema:

@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get list of books data",
                 "consumes": [
                     "application/json"
@@ -58,6 +63,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Input new book with title and author name",
                 "consumes": [
                     "application/json"
@@ -98,6 +108,11 @@ const docTemplate = `{
         },
         "/books/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get single book data",
                 "consumes": [
                     "application/json"
@@ -134,6 +149,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update existing book",
                 "consumes": [
                     "application/json"
@@ -179,6 +199,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete single book data",
                 "consumes": [
                     "application/json"
@@ -237,7 +262,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User"
                         }
                     },
                     "400": {
@@ -277,7 +302,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_AuthToken"
                         }
                     },
                     "400": {
@@ -317,7 +342,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User"
+                            "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User"
                         }
                     },
                     "400": {
@@ -395,17 +420,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_AuthToken": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
         "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_Book": {
             "type": "object",
             "properties": {
@@ -417,7 +431,18 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-entity_User": {
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_AuthToken": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_andruwizz_gin-rest-book-backend_internal_entity.AuthToken"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_andruwizz_gin-rest-book-backend_internal_delivery_response.DataResponse-github_com_andruwizz_gin-rest-book-backend_internal_entity_User": {
             "type": "object",
             "properties": {
                 "data": {
@@ -527,7 +552,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "email": {
                     "type": "string"
@@ -539,7 +564,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         }

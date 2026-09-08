@@ -35,7 +35,7 @@ func Bootstrap(config *BootstrapConfig) {
 
 	// Setup Router
 	rg := config.App.Group("/api/v1")
-	routes.BookRouter(rg, bookHandler)
+	routes.BookRouter(rg, bookHandler, authHelper)
 	routes.UserRouter(rg, userHandler, authHelper)
 
 	// Setup API Documentation
