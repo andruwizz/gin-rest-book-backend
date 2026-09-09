@@ -99,7 +99,7 @@ The server will start on the host/port configured in `.env` (`APP_HOST`/`APP_POR
 Swagger docs are generated with `swaggo` and served via `gin-swagger`. After starting the server, visit:
 
 ```
-http://localhost:<APP_PORT>/swagger/index.html
+http://localhost:<APP_PORT>/api/v1/docs/index.html
 ```
 
 To regenerate the docs after changing handlers/annotations:
