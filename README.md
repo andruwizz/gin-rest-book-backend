@@ -2,6 +2,10 @@
 
 A REST API for managing books with JWT-based user authentication, built with [Gin](https://github.com/gin-gonic/gin) and [GORM](https://gorm.io) following a clean, layered architecture (handler → usecase → repository).
 
+## Live Demo
+
+Visit live demo site: [Demo](https://gin-rest-book-backend-demo.up.railway.app)
+
 ## Tech Stack
 
 - [Go](https://go.dev/) 1.26
