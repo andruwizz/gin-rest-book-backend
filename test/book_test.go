@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/andruwizz/gin-rest-book-backend/internal/delivery/handler"
@@ -18,11 +17,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
-
-func TestMain(m *testing.M) {
-	gin.SetMode(gin.TestMode)
-	os.Exit(m.Run())
-}
 
 func NewBookMockSetup() (*handler.BookHandler, *helper.AuthHelper) {
 	authHelper := helper.NewAuthHelper("Book REST Backend", "userInfo", 1, "test-signature-key")
