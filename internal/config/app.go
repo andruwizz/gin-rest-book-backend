@@ -30,10 +30,14 @@ func Bootstrap(config *BootstrapConfig) {
 	userService := user.NewUserUsecase(userRepository, authHelper)
 
 	// Setup Handler
+	defaultHandler := handler.NewDefaultHandler()
+
 	bookHandler := handler.NewBookHandler(bookService)
 	userHandler := handler.NewUserHandler(userService, authHelper)
 
 	// Setup Router
+	routes.DefaultRouter(config.App, defaultHandler)
+
 	rg := config.App.Group("/api/v1")
 	routes.BookRouter(rg, bookHandler, authHelper)
 	routes.UserRouter(rg, userHandler, authHelper)
