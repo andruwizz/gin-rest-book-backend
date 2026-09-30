@@ -16,6 +16,10 @@ import (
 
 func TestMain(m *testing.M) {
 	gin.SetMode(gin.TestMode)
+
+	// Change working directory to project root so that relative paths to assets work correctly
+	os.Chdir("../")
+
 	os.Exit(m.Run())
 }
 
@@ -44,6 +48,22 @@ func TestIndex(t *testing.T) {
 	assert.Equal(t, response.EmptyResponse{
 		Success: true,
 	}, res)
+}
+
+func TestRobotsTxt(t *testing.T) {
+	// Arrange
+	app := gin.Default()
+	defaultHandler := NewDefaultMockSetup()
+	routes.DefaultRouter(app, defaultHandler)
+
+	// Act
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest(http.MethodGet, "/robots.txt", nil)
+	app.ServeHTTP(w, req)
+
+	// Assert
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Contains(t, w.Body.String(), "Disallow: /")
 }
 
 func TestNotFound(t *testing.T) {

@@ -28,5 +28,8 @@ WORKDIR /root/
 # Copy the binary from the builder stage
 COPY --from=builder /app/main .
 
+# Copy static assets
+COPY assets/ ./assets/
+
 # Command to run the executable
 ENTRYPOINT ["./main"]

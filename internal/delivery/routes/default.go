@@ -7,5 +7,6 @@ import (
 
 func DefaultRouter(app *gin.Engine, h *handler.DefaultHandler) {
 	app.GET("/", h.Index)
+	app.StaticFile("/robots.txt", "./assets/robots.txt")
 	app.NoRoute(h.NotFound)
 }

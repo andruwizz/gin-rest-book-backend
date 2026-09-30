@@ -21,6 +21,7 @@ Visit live demo site: [Demo](https://gin-rest-book-backend-demo.up.railway.app)
 ## Project Structure
 
 ```
+assets/               Static assets (e.g robots.txt)
 cmd/                  Application entrypoint
 database/migrations/  SQL migration files
 docs/                 Generated Swagger docs
@@ -116,6 +117,8 @@ make api-docs
 
 | Method | Endpoint          | Description                  | Auth Required |
 |--------|-------------------|-------------------------------|----------------|
+| GET    | `/`               | Health check                 | No             |
+| GET    | `/robots.txt`     | Crawler policy               | No             |
 | POST   | `/users/register` | Register a new user          | No             |
 | POST   | `/users/login`    | Login and receive a JWT      | No             |
 | GET    | `/users/current`  | Get the current authenticated user | Yes      |
