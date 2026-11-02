@@ -55,8 +55,8 @@ A REST API for managing books with JWT-based user authentication, built with [Gi
 
 ## Prerequisites
 
-- Go 1.26+
-- Docker & Docker Compose (for MySQL)
+- [Go](https://go.dev/dl/) 1.26+
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/) (for running MySQL)
 - [golang-migrate CLI](https://github.com/golang-migrate/migrate)
 - [swag CLI](https://github.com/swaggo/swag) (for generating API docs)
 - [godotenv CLI](https://github.com/joho/godotenv)
