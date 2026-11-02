@@ -15,15 +15,15 @@ A REST API for managing books with JWT-based user authentication, built with [Gi
 
 ## Tech Stack
 
-- [Go](https://go.dev/) 1.26
-- [Gin](https://github.com/gin-gonic/gin) — HTTP web framework
-- [GORM](https://gorm.io) + MySQL driver — ORM
-- [golang-jwt](https://github.com/golang-jwt/jwt) — JWT authentication
-- [validator](https://github.com/go-playground/validator) — request validation
-- [swaggo](https://github.com/swaggo/swag) — Swagger/OpenAPI documentation
-- [testify](https://github.com/stretchr/testify) — testing
-- [golang-migrate](https://github.com/golang-migrate/migrate) — database migrations
-- [godotenv](https://github.com/joho/godotenv) — environment variable loading
+- **Language**: [Go](https://go.dev/) (1.26+)
+- **HTTP Web Framework**: [Gin](https://github.com/gin-gonic/gin) (v1.12.0)
+- **MySQL Driver — ORM**: [GORM](https://gorm.io)
+- **JWT Authentication**: [golang-jwt](https://github.com/golang-jwt/jwt)
+- **Request Validation**: [validator](https://github.com/go-playground/validator)
+- **Swagger/OpenAPI Documentation**: [swaggo](https://github.com/swaggo/swag)
+- **Testing**: [testify](https://github.com/stretchr/testify)
+- **Database Migrations**: [golang-migrate](https://github.com/golang-migrate/migrate)
+- **Environment Variable**: [godotenv](https://github.com/joho/godotenv)
 
 ## Project Structure
 
