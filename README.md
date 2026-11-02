@@ -27,24 +27,30 @@ A REST API for managing books with JWT-based user authentication, built with [Gi
 
 ## Project Structure
 
-```
-assets/               Static assets (e.g robots.txt)
-cmd/                  Application entrypoint
-database/migrations/  SQL migration files
-docs/                 Generated Swagger docs
-internal/
-  config/             Env, database, Gin, and Swagger bootstrap
-  delivery/
-    handler/           HTTP request handlers
-    middleware/         Gin middlewares (e.g. auth)
-    request/            Request payload structs
-    response/           Response payload structs
-  entity/               Domain entities
-  helper/                Shared helpers (e.g. auth/JWT)
-  model/                 Database models
-  repository/            Data access layer
-  usecase/               Business logic layer (+ mocks for testing)
-test/                  Integration/unit tests
+```text
+├── assets/                 # Static assets
+├── cmd/                    # Application entry point
+├── database/
+│   └── migrations/         # Database schema migrations
+├── docs/                   # Generated Swagger/OpenAPI documentation
+├── internal/
+│   ├── config/             # Application and service configuration
+│   ├── delivery/
+│   │   ├── handler/        # HTTP request handlers
+│   │   ├── middleware/     # HTTP middleware
+│   │   ├── request/        # Request payload definitions
+│   │   ├── response/       # API response definitions
+│   │   └── routes/         # API route registration
+│   ├── entity/             # Domain entities
+│   ├── helper/             # Shared helpers
+│   ├── model/              # Database models
+│   ├── repository/         # Data access layer
+│   └── usecase/
+│       ├── book/
+│       │   └── mock/       # Book use-case mocks
+│       └── user/
+│           └── mock/       # User use-case mocks
+└── test/                   # API tests
 ```
 
 ## Prerequisites
