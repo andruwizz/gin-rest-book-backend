@@ -2,6 +2,17 @@
 
 A REST API for managing books with JWT-based user authentication, built with [Gin](https://github.com/gin-gonic/gin) and [GORM](https://gorm.io) following a clean, layered architecture (handler → usecase → repository).
 
+## Features
+
+- **User Authentication**: User registration and login with password hashing and JWT-based authentication.
+- **Book Management (CRUD)**: Endpoints to create, view, update, and delete books.
+- **Pagination**: Paginated book listings with configurable `page` and `limit` query parameters.
+- **Request Validation**: Automatic request payload validation with structured error responses.
+- **Interactive API Documentation**: Swagger/OpenAPI documentation served through Swagger UI.
+- **Database Migrations**: Version-controlled database schema management using `golang-migrate`.
+- **Clean Architecture**: Decoupled layered design (Handler → Usecase → Repository).
+- **Docker Support**: Docker and Docker Compose configuration for quick setup and deployment.
+
 ## Tech Stack
 
 - [Go](https://go.dev/) 1.26
