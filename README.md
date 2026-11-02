@@ -17,7 +17,7 @@ A REST API for managing books with JWT-based user authentication, built with [Gi
 
 - **Language**: [Go](https://go.dev/) (1.26+)
 - **HTTP Web Framework**: [Gin](https://github.com/gin-gonic/gin) (v1.12.0)
-- **MySQL Driver — ORM**: [GORM](https://gorm.io)
+- **ORM**: [GORM](https://gorm.io)
 - **JWT Authentication**: [golang-jwt](https://github.com/golang-jwt/jwt)
 - **Request Validation**: [validator](https://github.com/go-playground/validator)
 - **Swagger/OpenAPI Documentation**: [swaggo](https://github.com/swaggo/swag)
